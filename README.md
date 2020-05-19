@@ -1,3 +1,3 @@
-# sweaterweather
+# sweater weather
 
 Weather application.
