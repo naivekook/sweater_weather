@@ -8,11 +8,11 @@ import 'package:sweaterweather/models/location.dart';
 import 'package:sweaterweather/models/network_result.dart';
 import 'package:sweaterweather/models/weather.dart';
 
-class WeatherClient {
+class WeatherService {
   static const String URL = 'http://api.openweathermap.org/data/2.5';
   final String _apiKey;
 
-  WeatherClient(this._apiKey);
+  WeatherService(this._apiKey);
 
   Future<NetworkResult<List<City>, String>> findCity(String name) async {
     final response = await http.get(URL + '/find?q=$name&type=like&appid=$_apiKey');

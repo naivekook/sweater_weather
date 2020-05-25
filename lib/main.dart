@@ -1,20 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:sweaterweather/models/location.dart';
 
 import 'screens/home_screen.dart';
-import 'services/weather_client.dart';
 
 Future<void> main() async {
   await DotEnv().load('.env');
-  final weatherClient = WeatherClient(DotEnv().env['WEATHER_API_KEY']);
-  final result =
-      await weatherClient.getWeatherByLocation(Location(lat: 34.0201598, lon: -118.6926001));
-  if (result.isSuccess()) {
-    print("result" + result.successValue.toString());
-  } else {
-    print("result" + result.errorValue);
-  }
+//  final weatherClient = WeatherService(DotEnv().env['WEATHER_API_KEY']);
+//  final result =
+//      await weatherClient.getWeatherByLocation(Location(lat: 34.0201598, lon: -118.6926001));
+//  if (result.isSuccess()) {
+//    print("result" + result.successValue.toString());
+//  } else {
+//    print("result" + result.errorValue);
+//  }
 
   return runApp(MyApp());
 }

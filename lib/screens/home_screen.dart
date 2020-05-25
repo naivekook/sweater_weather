@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sweaterweather/screens/addcity/add_city_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   @override
@@ -29,7 +30,9 @@ class TopBarWidget extends StatelessWidget {
         ),
         IconButton(
           icon: Icon(Icons.search),
-          onPressed: () {},
+          onPressed: () {
+            Navigator.push(context, MaterialPageRoute(builder: (context) => AddCityScreen()));
+          },
         ),
       ],
     );
