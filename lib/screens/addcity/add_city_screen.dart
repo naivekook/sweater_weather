@@ -66,8 +66,26 @@ class _CityListWidget extends StatelessWidget {
       if (value.isProgress) {
         return Center(child: CircularProgressIndicator());
       } else {
-        return ListView(
-          children: value.cityTiles(),
+        final items = value.cityListItems();
+        return ListView.separated(
+          separatorBuilder: (context, index) => Divider(
+            color: Colors.grey,
+          ),
+          itemCount: items.length,
+          itemBuilder: (context, index) => ListTile(
+            leading: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Image.network(items[index].iconUrl),
+              ],
+            ),
+            title: Text(items[index].title),
+            onTap: () {
+              Provider.of<AddCityController>(context, listen: false)
+                  .addNewCity(items[index].city)
+                  .then((value) => Navigator.pop(context));
+            },
+          ),
         );
       }
     });

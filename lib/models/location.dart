@@ -8,4 +8,11 @@ class Location {
     lat = json['lat'].toDouble();
     lon = json['lon'].toDouble();
   }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['lat'] = lat;
+    data['lon'] = lon;
+    return data;
+  }
 }
