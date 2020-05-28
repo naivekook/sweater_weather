@@ -12,4 +12,13 @@ class WeatherCondition {
     description = json['description'];
     icon = json['icon'];
   }
+
+  Map<String, dynamic> toJson() {
+    final data = Map<String, dynamic>();
+    data['id'] = id;
+    data['main'] = main;
+    data['description'] = description;
+    data['icon'] = icon;
+    return data;
+  }
 }

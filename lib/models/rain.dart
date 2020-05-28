@@ -8,4 +8,13 @@ class Rain {
     d1h = json['1h'].toDouble();
     d3h = json['3h']?.toDouble();
   }
+
+  Map<String, dynamic> toJson() {
+    final data = Map<String, dynamic>();
+    data['1h'] = d1h;
+    if (d3h != null) {
+      data['3h'] = d3h;
+    }
+    return data;
+  }
 }

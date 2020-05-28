@@ -10,7 +10,7 @@ class Location {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final data = Map<String, dynamic>();
     data['lat'] = lat;
     data['lon'] = lon;
     return data;

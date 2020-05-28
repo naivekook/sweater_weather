@@ -20,14 +20,14 @@ class City {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final data = Map<String, dynamic>();
     data['id'] = id;
     data['name'] = name;
     if (location != null) {
       data['coord'] = location.toJson();
     }
     if (country != null) {
-      final Map<String, dynamic> data = new Map<String, dynamic>();
+      final data = Map<String, dynamic>();
       data['country'] = country;
       data['sys'] = data;
     }
