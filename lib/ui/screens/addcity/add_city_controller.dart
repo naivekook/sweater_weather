@@ -1,15 +1,15 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:sweaterweather/data/services/weather_service.dart';
+import 'package:sweaterweather/data/storage/city_storage.dart';
 import 'package:sweaterweather/models/city.dart';
 import 'package:sweaterweather/models/location.dart';
-import 'package:sweaterweather/screens/addcity/city_list_item.dart';
-import 'package:sweaterweather/services/city_storage_service.dart';
-import 'package:sweaterweather/services/weather_service.dart';
+import 'package:sweaterweather/ui/screens/addcity/city_list_item.dart';
 
 class AddCityController with ChangeNotifier {
   final _weatherService = WeatherService(DotEnv().env['WEATHER_API_KEY']);
-  final _cityStorage = CityStorageService();
+  final _cityStorage = CityStorage();
   List<City> _cities = [];
 
   bool isProgress = false;

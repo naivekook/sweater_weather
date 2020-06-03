@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-
-import 'screens/home_screen.dart';
+import 'package:sweaterweather/ui/screens/home/home_screen.dart';
 
 Future<void> main() async {
   await DotEnv().load('.env');

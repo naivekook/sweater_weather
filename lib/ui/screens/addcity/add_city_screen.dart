@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:sweaterweather/screens/addcity/add_city_controller.dart';
+import 'package:sweaterweather/ui/screens/addcity/add_city_controller.dart';
 import 'package:sweaterweather/utils/debouncer.dart';
 
 class AddCityScreen extends StatelessWidget {

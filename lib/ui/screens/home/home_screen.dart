@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:sweaterweather/screens/addcity/add_city_screen.dart';
+import 'package:sweaterweather/models/city.dart';
+import 'package:sweaterweather/models/location.dart';
+import 'package:sweaterweather/ui/screens/addcity/add_city_screen.dart';
+import 'package:sweaterweather/ui/screens/weather/weather_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   @override
@@ -26,7 +29,10 @@ class TopBarWidget extends StatelessWidget {
       children: <Widget>[
         IconButton(
           icon: Icon(Icons.menu),
-          onPressed: () {},
+          onPressed: () {
+            final city = City(id: 625144, name: 'Minsk', country: 'BY', location: Location(lat: 53.9, lon: 27.57));
+            Navigator.push(context, MaterialPageRoute(builder: (context) => WeatherScreen(city: city)));
+          },
         ),
         IconButton(
           icon: Icon(Icons.search),
@@ -47,8 +53,7 @@ class HeaderWidget extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
-          Text('New Delhi',
-              style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold)),
+          Text('New Delhi', style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold)),
           Padding(
             padding: const EdgeInsets.only(left: 8.0),
             child: Text('15 may 2020'),

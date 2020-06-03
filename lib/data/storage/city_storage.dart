@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sweaterweather/models/city.dart';
 
-class CityStorageService {
+class CityStorage {
   static const _CITY_LIST_KEY = 'saved_cities';
 
   Future<void> addCity(City city) async {

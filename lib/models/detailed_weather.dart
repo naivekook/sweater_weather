@@ -99,7 +99,7 @@ class Current {
     feelsLike = json['feels_like'];
     pressure = json['pressure'];
     humidity = json['humidity'];
-    atmosphericTemp = json['dew_point'];
+    atmosphericTemp = json['dew_point'].toDouble();
     uvi = json['uvi'];
     clouds = json['clouds'];
     visibility = json['visibility'];
@@ -269,7 +269,7 @@ class Daily {
     }
     pressure = json['pressure'];
     humidity = json['humidity'];
-    atmosphericTemp = json['dew_point'];
+    atmosphericTemp = json['dew_point'].toDouble();
     windSpeed = json['wind_speed'].toDouble();
     windDeg = json['wind_deg'];
     if (json['weather'] != null) {

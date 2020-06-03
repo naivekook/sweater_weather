@@ -4,7 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sweaterweather/models/detailed_weather.dart';
 import 'package:sweaterweather/models/weather.dart';
 
-class WeatherStorageService {
+class WeatherStorage {
   static const _WEATHER_KEY = 'saved_weather';
   static const _WEATHER_DETAILED_KEY = 'saved_detailed_weather';
 
