@@ -7,7 +7,7 @@ import 'package:sweaterweather/ui/widgets/SinglePropertyWidget.dart';
 class WeatherScreen extends StatelessWidget {
   final City city;
 
-  WeatherScreen({Key key, @required this.city}) : super(key: key);
+  WeatherScreen(this.city);
 
   @override
   Widget build(BuildContext context) {

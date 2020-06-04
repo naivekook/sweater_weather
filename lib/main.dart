@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:sweaterweather/ui/screens/home/home_screen.dart';
+import 'package:sweaterweather/router.dart';
 
 Future<void> main() async {
   await DotEnv().load('.env');
@@ -22,7 +22,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData.light(),
-      home: HomeScreen(),
+      onGenerateRoute: Router.generateRoute,
+      initialRoute: Router.HOME,
     );
   }
 }
