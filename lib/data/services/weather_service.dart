@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
-import 'package:sweaterweather/data/storage/weather_storage.dart';
 import 'package:sweaterweather/models/city.dart';
 import 'package:sweaterweather/models/detailed_weather.dart';
 import 'package:sweaterweather/models/location.dart';
@@ -12,7 +11,6 @@ import 'package:sweaterweather/models/weather.dart';
 class WeatherService {
   static const String URL = 'http://api.openweathermap.org/data/2.5';
   final String _apiKey;
-  final _weatherStorage = WeatherStorage();
 
   WeatherService(this._apiKey);
 
@@ -32,7 +30,6 @@ class WeatherService {
 
     if (response.statusCode == 200) {
       final result = await compute(_parseWeather, response.body);
-      await _weatherStorage.saveWeather(result);
       return NetworkResult(successValue: result);
     } else {
       return NetworkResult(errorValue: getErrorMessage(response));
@@ -45,7 +42,6 @@ class WeatherService {
 
     if (response.statusCode == 200) {
       final result = await compute(_parseWeather, response.body);
-      await _weatherStorage.saveWeather(result);
       return NetworkResult(successValue: result);
     } else {
       return NetworkResult(errorValue: getErrorMessage(response));
@@ -58,7 +54,6 @@ class WeatherService {
 
     if (response.statusCode == 200) {
       final result = await compute(_parseOneCall, response.body);
-      await _weatherStorage.saveDetailedWeather(result);
       return NetworkResult(successValue: result);
     } else {
       return NetworkResult(errorValue: getErrorMessage(response));

@@ -1,17 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:get_it/get_it.dart';
+import 'package:sweaterweather/data/repository/city_repository.dart';
+import 'package:sweaterweather/data/repository/detailed_weather_repository.dart';
+import 'package:sweaterweather/data/repository/weather_repository.dart';
+import 'package:sweaterweather/data/services/weather_service.dart';
+import 'package:sweaterweather/data/storage/city_storage.dart';
+import 'package:sweaterweather/data/storage/detailed_weather_storage.dart';
+import 'package:sweaterweather/data/storage/weather_storage.dart';
 import 'package:sweaterweather/router.dart';
+
+GetIt getIt = GetIt.instance;
 
 Future<void> main() async {
   await DotEnv().load('.env');
-//  final weatherClient = WeatherService(DotEnv().env['WEATHER_API_KEY']);
-//  final result =
-//      await weatherClient.getWeatherByLocation(Location(lat: 34.0201598, lon: -118.6926001));
-//  if (result.isSuccess()) {
-//    print("result" + result.successValue.toString());
-//  } else {
-//    print("result" + result.errorValue);
-//  }
+  final _weatherService = WeatherService(DotEnv().env['WEATHER_API_KEY']);
+
+  getIt.registerSingleton(CityRepository(_weatherService, CityStorage()));
+  getIt.registerSingleton(WeatherRepository(_weatherService, WeatherStorage()));
+  getIt.registerSingleton(DetailedWeatherRepository(_weatherService, DetailedWeatherStorage()));
 
   return runApp(MyApp());
 }
