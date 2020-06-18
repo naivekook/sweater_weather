@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sweaterweather/models/city.dart';
 import 'package:sweaterweather/ui/screens/weather/weather_controller.dart';
-import 'package:sweaterweather/ui/widgets/SinglePropertyWidget.dart';
+import 'package:sweaterweather/ui/widgets/single_property_widget.dart';
 
 class WeatherScreen extends StatelessWidget {
   final City city;

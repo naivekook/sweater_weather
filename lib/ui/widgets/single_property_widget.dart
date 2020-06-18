@@ -21,9 +21,7 @@ class SinglePropertyWidget extends StatelessWidget {
                   fontStyle: FontStyle.normal,
                   fontWeight: FontWeight.normal)),
         ),
-        SizedBox(
-          height: 12,
-        ),
+        SizedBox(height: 12),
         Text(
           subtitle,
           style: GoogleFonts.inter(

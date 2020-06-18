@@ -18,7 +18,18 @@ class Weather {
   int timestamp;
   int visibility;
 
-  Weather({location, weather, main, visibility, wind, clouds, timestamp, sys, timezone, cityId, cityName});
+  Weather(
+      {this.location,
+      this.weather,
+      this.main,
+      this.visibility,
+      this.wind,
+      this.clouds,
+      this.timestamp,
+      this.sys,
+      this.timezone,
+      this.cityId,
+      this.cityName});
 
   Weather.fromJson(Map<String, dynamic> json) {
     timestamp = json['dt'];

@@ -68,9 +68,7 @@ class _CityListWidget extends StatelessWidget {
       } else {
         final items = value.cityListItems();
         return ListView.separated(
-          separatorBuilder: (context, index) => Divider(
-            color: Colors.grey,
-          ),
+          separatorBuilder: (context, index) => Divider(color: Colors.grey),
           itemCount: items.length,
           itemBuilder: (context, index) => ListTile(
             leading: Column(
