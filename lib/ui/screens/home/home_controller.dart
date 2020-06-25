@@ -1,10 +1,14 @@
 import 'package:flutter/foundation.dart';
 import 'package:sweaterweather/data/repository/city_repository.dart';
+import 'package:sweaterweather/data/repository/weather_repository.dart';
 import 'package:sweaterweather/main.dart';
+import 'package:sweaterweather/models/city.dart';
+import 'package:sweaterweather/models/weather.dart';
 import 'package:sweaterweather/ui/screens/home/location_list_item.dart';
 
 class HomeController with ChangeNotifier {
   final CityRepository _cityRepository = getIt.get();
+  final WeatherRepository _weatherRepository = getIt.get();
 
   List<LocationListItem> cities = [];
 
@@ -14,7 +18,20 @@ class HomeController with ChangeNotifier {
 
   Future<void> getLocation() async {
     final savedCities = await _cityRepository.getCities();
-    cities = savedCities.map((city) => LocationListItem(city.name, "cloudy", 15, "")).toList();
+    List<Weather> weatherList = [];
+    for (City city in savedCities) {
+      weatherList.add(await _weatherRepository.getWeatherForCity(city));
+    }
+    cities = savedCities.map((city) {
+      final weather =
+          weatherList.firstWhere((element) => element.cityId == city.id);
+      final condition = weather.weather.first;
+      return LocationListItem(
+          city.name,
+          condition.description,
+          weather.main.temp.toInt(),
+          'http://openweathermap.org/img/wn/${condition.icon}@2x.png');
+    }).toList();
     notifyListeners();
   }
 }

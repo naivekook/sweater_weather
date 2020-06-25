@@ -27,9 +27,9 @@ class City {
       data['coord'] = location.toJson();
     }
     if (country != null) {
-      final data = Map<String, dynamic>();
-      data['country'] = country;
-      data['sys'] = data;
+      final countryData = Map<String, dynamic>();
+      countryData['country'] = country;
+      data['sys'] = countryData;
     }
     return data;
   }

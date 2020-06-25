@@ -73,7 +73,6 @@ class _TopBarWidget extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(top: 20.0, bottom: 0.0, left: 20.0, right: 20.0),
       child: Row(
-//        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           IconButton(
             icon: Icon(Icons.menu),
@@ -136,7 +135,7 @@ class _CityListItemWidget extends StatelessWidget {
           children: <Widget>[
             Container(
               alignment: Alignment.centerRight,
-              child: Image.network('http://cdn.weatherapi.com/weather/128x128/night/113.png'),
+              child: Image.network(data.image),
             ),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 0.0, horizontal: 27.0),
