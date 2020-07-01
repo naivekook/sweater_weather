@@ -1,8 +1,10 @@
+import 'package:sweaterweather/models/city.dart';
+
 class LocationListItem {
-  String name;
+  City city;
   String weatherDescription;
   int temp;
   String image;
 
-  LocationListItem(this.name, this.weatherDescription, this.temp, this.image);
+  LocationListItem(this.city, this.weatherDescription, this.temp, this.image);
 }

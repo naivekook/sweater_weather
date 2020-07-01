@@ -57,7 +57,11 @@ class _FAB extends StatelessWidget {
         foregroundColor: const Color(0xFF3D3F4E),
         child: Icon(Icons.add),
         elevation: 0.0,
-        shape: CircleBorder(side: BorderSide(color: const Color(0xFFDBDDF1), style: BorderStyle.solid, width: 1.0)),
+        shape: CircleBorder(
+            side: BorderSide(
+                color: const Color(0xFFDBDDF1),
+                style: BorderStyle.solid,
+                width: 1.0)),
         onPressed: () async {
           await Navigator.pushNamed(context, Router.ADD_CITY);
           Provider.of<HomeController>(context, listen: false).getLocation();
@@ -71,7 +75,7 @@ class _TopBarWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top: 20.0, bottom: 0.0, left: 20.0, right: 20.0),
+      padding: const EdgeInsets.all(8),
       child: Row(
         children: <Widget>[
           IconButton(
@@ -107,7 +111,11 @@ class _CityListWidget extends StatelessWidget {
           child: ListView.separated(
             separatorBuilder: (context, index) => Divider(color: Colors.white),
             itemCount: items.length,
-            itemBuilder: (context, index) => _CityListItemWidget(items[index]),
+            itemBuilder: (context, index) => GestureDetector(
+              child: _CityListItemWidget(items[index]),
+              onTap: () => Navigator.pushNamed(context, Router.WEATHER,
+                  arguments: items[index].city),
+            ),
             padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 34.0),
           ),
         );
@@ -138,7 +146,8 @@ class _CityListItemWidget extends StatelessWidget {
               child: Image.network(data.image),
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(vertical: 0.0, horizontal: 27.0),
+              padding:
+                  const EdgeInsets.symmetric(vertical: 0.0, horizontal: 27.0),
               child: Row(
                 children: <Widget>[
                   Text(
@@ -156,7 +165,7 @@ class _CityListItemWidget extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       Text(
-                        data.name,
+                        data.city.name,
                         style: GoogleFonts.inter(
                             textStyle: TextStyle(
                                 color: const Color(0xFF3D3F4E),

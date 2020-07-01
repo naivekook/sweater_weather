@@ -27,7 +27,7 @@ class HomeController with ChangeNotifier {
           weatherList.firstWhere((element) => element.cityId == city.id);
       final condition = weather.weather.first;
       return LocationListItem(
-          city.name,
+          city,
           condition.description,
           weather.main.temp.toInt(),
           'http://openweathermap.org/img/wn/${condition.icon}@2x.png');

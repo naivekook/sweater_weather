@@ -29,12 +29,11 @@ class _TopBarWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(
-          top: 20.0, bottom: 0.0, left: 20.0, right: 20.0),
+      padding: const EdgeInsets.all(8),
       child: Row(
         children: <Widget>[
           IconButton(
-            icon: Icon(Icons.arrow_back),
+            icon: Icon(Icons.arrow_back_ios),
             onPressed: () => Navigator.pop(context),
           ),
           Text(

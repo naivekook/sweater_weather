@@ -10,13 +10,6 @@ class WeatherRepository {
 
   WeatherRepository(this._weatherService, this._weatherStorage);
 
-  Future<void> _saveWeather(Weather weather) async {
-    final List<WeatherExtended> weatherList = await _weatherStorage.getWeather();
-    weatherList.removeWhere((element) => element.location == weather.location);
-    weatherList.add(WeatherExtended(location: weather.location, weather: weather));
-    await _weatherStorage.saveWeather(weatherList);
-  }
-
   Future<List<Weather>> getAllWeather() async {
     final items = await _weatherStorage.getWeather();
     return items.map((e) => e.weather).toList();
@@ -31,5 +24,12 @@ class WeatherRepository {
       print(result.errorValue);
       return null;
     }
+  }
+
+  Future<void> _saveWeather(Weather weather) async {
+    final List<WeatherExtended> weatherList = await _weatherStorage.getWeather();
+    weatherList.removeWhere((element) => element.location == weather.location);
+    weatherList.add(WeatherExtended(location: weather.location, weather: weather));
+    await _weatherStorage.saveWeather(weatherList);
   }
 }

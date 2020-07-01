@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:sweaterweather/models/city.dart';
 import 'package:sweaterweather/ui/screens/weather/weather_controller.dart';
@@ -11,13 +12,34 @@ class WeatherScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color(0xFFDDEEF3),
-      body: SafeArea(
-        child: ChangeNotifierProvider(
-          create: (context) => WeatherController(city),
-          child: Container(
-            child: _WeatherAdditionalProperties(),
+    return ChangeNotifierProvider(
+      create: (context) => WeatherController(city),
+      child: Scaffold(
+        backgroundColor: const Color(0xFFDDEEF3),
+        body: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              children: <Widget>[
+                _TopBarWidget(),
+                Padding(
+                  padding: const EdgeInsets.all(48.0),
+                  child: _WeatherAdditionalProperties(),
+                ),
+                OutlineButton(
+                  child: Text(
+                    'More details',
+                    style: GoogleFonts.inter(
+                        textStyle: TextStyle(
+                            color: const Color(0xFF3D3F4E),
+                            fontSize: 14,
+                            fontStyle: FontStyle.normal,
+                            fontWeight: FontWeight.w800)),
+                  ),
+                  onPressed: () => Navigator.pop(context),
+                )
+              ],
+            ),
           ),
         ),
       ),
@@ -25,8 +47,58 @@ class WeatherScreen extends StatelessWidget {
   }
 }
 
-class _WeatherAdditionalProperties extends StatelessWidget {
+class _TopBarWidget extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final info =
+        Provider.of<WeatherController>(context, listen: false).getHeaderInfo();
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        IconButton(
+          icon: Icon(Icons.arrow_back_ios),
+          onPressed: () => Navigator.pop(context),
+        ),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Text(
+              info.title,
+              style: GoogleFonts.inter(
+                  textStyle: TextStyle(
+                      color: const Color(0xFF3D3F4E),
+                      fontSize: 36,
+                      fontStyle: FontStyle.normal,
+                      fontWeight: FontWeight.w800)),
+            ),
+            SizedBox(height: 6),
+            Text(
+              info.date,
+              style: GoogleFonts.inter(
+                  textStyle: TextStyle(
+                      color: const Color(0xFF7F808C),
+                      fontSize: 14,
+                      fontStyle: FontStyle.normal,
+                      fontWeight: FontWeight.normal)),
+            ),
+            SizedBox(height: 6),
+            Text(
+              info.dayOfWeek,
+              style: GoogleFonts.inter(
+                  textStyle: TextStyle(
+                      color: const Color(0xFF7F808C),
+                      fontSize: 14,
+                      fontStyle: FontStyle.normal,
+                      fontWeight: FontWeight.normal)),
+            ),
+          ],
+        )
+      ],
+    );
+  }
+}
 
+class _WeatherAdditionalProperties extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer<WeatherController>(builder: (context, value, child) {
@@ -36,13 +108,15 @@ class _WeatherAdditionalProperties extends StatelessWidget {
           children: <Widget>[
             Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: _listWithDividers(
-                    items.take(3).map((item) => SinglePropertyWidget(title: item.title, subtitle: item.subtitle)))),
+                children: _listWithDividers(items.take(3).map((item) =>
+                    SinglePropertyWidget(
+                        title: item.title, subtitle: item.subtitle)))),
             SizedBox(width: 50),
             Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: _listWithDividers(
-                    items.skip(3).map((item) => SinglePropertyWidget(title: item.title, subtitle: item.subtitle)))),
+                children: _listWithDividers(items.skip(3).map((item) =>
+                    SinglePropertyWidget(
+                        title: item.title, subtitle: item.subtitle)))),
           ],
         );
       } else {
