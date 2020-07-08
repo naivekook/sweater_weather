@@ -12,7 +12,8 @@ class AddCityController with ChangeNotifier {
 
   bool isProgress = false;
 
-  List<CityListItem> cityListItems() => _cities.map((e) => CityListItem(e)).toList();
+  List<CityListItem> cityListItems() =>
+      _cities.map((e) => CityListItem(e)).toList();
 
   Future<void> findByName(String name) async {
     _cities.clear();
@@ -30,8 +31,10 @@ class AddCityController with ChangeNotifier {
   Future<void> findByCurrentLocation() async {
     _setProgress(true);
     _cities.clear();
-    Position pos = await Geolocator().getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
-    final result = await _cityRepository.findCityByLocation(Location(lat: pos.latitude, lon: pos.longitude));
+    Position pos = await Geolocator()
+        .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+    final result = await _cityRepository
+        .findCityByLocation(Location(lat: pos.latitude, lon: pos.longitude));
     _cities.clear();
     _cities.add(result);
     _setProgress(false);

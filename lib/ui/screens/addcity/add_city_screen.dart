@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:sweaterweather/models/city.dart';
 import 'package:sweaterweather/ui/screens/addcity/add_city_controller.dart';
 import 'package:sweaterweather/ui/screens/addcity/add_city_list_tile.dart';
 import 'package:sweaterweather/utils/debouncer.dart';
@@ -133,15 +134,14 @@ class _CityListWidget extends StatelessWidget {
       } else {
         final items = value.cityListItems();
         return ListView.separated(
-            separatorBuilder: (context, index) => Divider(color: Colors.grey),
-            itemCount: items.length,
-            itemBuilder: (context, index) => AddCityListTile(items[index])
-//            onTap: () {
-//              Provider.of<AddCityController>(context, listen: false)
-//                  .addNewCity(items[index].city)
-//                  .then((value) => Navigator.pop(context));
-//            },
-            );
+          separatorBuilder: (context, index) => Divider(color: Colors.grey),
+          itemCount: items.length,
+          itemBuilder: (context, index) => AddCityListTile(
+              items[index],
+              (City city) =>
+                  Provider.of<AddCityController>(context, listen: false)
+                      .addNewCity(city)),
+        );
       }
     });
   }

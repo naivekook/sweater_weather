@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:sweaterweather/models/city.dart';
 import 'package:sweaterweather/ui/screens/addcity/add_city_list_item.dart';
 
 class AddCityListTile extends StatelessWidget {
   final CityListItem item;
-  final VoidCallback onTap;
+  final Function(City) onTap;
 
   AddCityListTile(this.item, this.onTap);
 
@@ -25,7 +26,7 @@ class AddCityListTile extends StatelessWidget {
                   ),
                 ),
                 TextSpan(
-                  text: '${item.city},',
+                  text: '${item.city.name},',
                   style: GoogleFonts.inter(
                       textStyle: TextStyle(
                           color: const Color(0xFF3D3F4E),
@@ -34,7 +35,7 @@ class AddCityListTile extends StatelessWidget {
                           fontWeight: FontWeight.w800)),
                 ),
                 TextSpan(
-                  text: item.country,
+                  text: item.city.country,
                   style: GoogleFonts.inter(
                       textStyle: TextStyle(
                           color: const Color(0xFF3D3F4E),
@@ -80,7 +81,7 @@ class AddCityListTile extends StatelessWidget {
             style: BorderStyle.solid),
         borderRadius: BorderRadius.circular(8),
       ),
-      onPressed: () => onTap(),
+      onPressed: () => onTap(item.city),
     );
   }
 }
