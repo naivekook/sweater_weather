@@ -3,35 +3,35 @@ class WeatherIconUtils {
 
   static String iconCodeToPath(String iconCode) {
     String name;
-    switch (iconCode) {
-      case '01d':
+    switch (iconCode.substring(0, 2)) {
+      case '01':
         name = 'clear_sky';
         break;
-      case '02d':
+      case '02':
         name = 'few_clouds';
         break;
-      case '03d':
+      case '03':
         name = 'scattered_clouds';
         break;
-      case '04d':
+      case '04':
         name = 'broken_clouds';
         break;
-      case '09d':
+      case '09':
         name = 'shower_rain';
         break;
-      case '10d':
+      case '10':
         name = 'rain';
         break;
-      case '11d':
+      case '11':
         name = 'thunderstorm';
         break;
-      case '13d':
+      case '13':
         name = 'snow';
         break;
-      case '50d':
+      case '50':
         name = 'mist';
         break;
     }
-    return name != null ? '$_imagesFolder/$name' : null;
+    return name != null ? '$_imagesFolder/$name.svg' : null;
   }
 }

@@ -26,23 +26,10 @@ class WeatherRepository {
     }
   }
 
-  Future<Weather> getWeatherForCityByName(String query) async {
-    final result = await _weatherService.getWeatherByCityId(city.id);
-    if (result.isSuccess()) {
-      await _saveWeather(result.successValue);
-      return result.successValue;
-    } else {
-      print(result.errorValue);
-      return null;
-    }
-  }
-
   Future<void> _saveWeather(Weather weather) async {
-    final List<WeatherExtended> weatherList =
-        await _weatherStorage.getWeather();
+    final List<WeatherExtended> weatherList = await _weatherStorage.getWeather();
     weatherList.removeWhere((element) => element.location == weather.location);
-    weatherList
-        .add(WeatherExtended(location: weather.location, weather: weather));
+    weatherList.add(WeatherExtended(location: weather.location, weather: weather));
     await _weatherStorage.saveWeather(weatherList);
   }
 }

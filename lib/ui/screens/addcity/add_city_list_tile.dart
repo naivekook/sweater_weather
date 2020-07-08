@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sweaterweather/models/city.dart';
 import 'package:sweaterweather/ui/screens/addcity/add_city_list_item.dart';
@@ -22,7 +22,7 @@ class AddCityListTile extends StatelessWidget {
                 WidgetSpan(
                   child: Padding(
                     padding: const EdgeInsets.only(right: 8),
-                    child: SvgPicture.asset('assets/images/mist.svg'),
+                    child: SvgPicture.asset(item.icon, width: 16, height: 16),
                   ),
                 ),
                 TextSpan(
@@ -68,8 +68,7 @@ class AddCityListTile extends StatelessWidget {
         added ? 'Added' : 'Add',
         style: GoogleFonts.inter(
             textStyle: TextStyle(
-                color:
-                    added ? const Color(0xFF24B021) : const Color(0xFF3D3F4E),
+                color: added ? const Color(0xFF24B021) : const Color(0xFF3D3F4E),
                 fontSize: 14,
                 fontStyle: FontStyle.normal,
                 fontWeight: FontWeight.normal)),

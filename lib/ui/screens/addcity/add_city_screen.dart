@@ -60,8 +60,7 @@ class _SearchBarWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(
-          top: 20.0, bottom: 0.0, left: 20.0, right: 20.0),
+      padding: const EdgeInsets.only(top: 20.0, bottom: 0.0, left: 20.0, right: 20.0),
       child: Row(
         children: <Widget>[
           Expanded(
@@ -106,8 +105,7 @@ class _SearchBarWidget extends StatelessWidget {
                       fontWeight: FontWeight.normal)),
               onChanged: (text) {
                 _debouncer.run(() {
-                  Provider.of<AddCityController>(context, listen: false)
-                      .findByName(text);
+                  Provider.of<AddCityController>(context, listen: false).findByName(text);
                 });
               },
             ),
@@ -115,8 +113,7 @@ class _SearchBarWidget extends StatelessWidget {
           IconButton(
             icon: Icon(Icons.my_location),
             onPressed: () {
-              Provider.of<AddCityController>(context, listen: false)
-                  .findByCurrentLocation();
+              Provider.of<AddCityController>(context, listen: false).findByCurrentLocation();
             },
           )
         ],
@@ -132,15 +129,14 @@ class _CityListWidget extends StatelessWidget {
       if (value.isProgress) {
         return Center(child: CircularProgressIndicator());
       } else {
-        final items = value.cityListItems();
+        final items = value.listItems;
         return ListView.separated(
           separatorBuilder: (context, index) => Divider(color: Colors.grey),
           itemCount: items.length,
           itemBuilder: (context, index) => AddCityListTile(
               items[index],
               (City city) =>
-                  Provider.of<AddCityController>(context, listen: false)
-                      .addNewCity(city)),
+                  Provider.of<AddCityController>(context, listen: false).addNewCity(city)),
         );
       }
     });
