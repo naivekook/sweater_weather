@@ -4,7 +4,7 @@ import 'package:sweaterweather/data/repository/city_repository.dart';
 import 'package:sweaterweather/main.dart';
 import 'package:sweaterweather/models/city.dart';
 import 'package:sweaterweather/models/location.dart';
-import 'package:sweaterweather/ui/screens/addcity/city_list_item.dart';
+import 'package:sweaterweather/ui/screens/addcity/add_city_list_item.dart';
 
 class AddCityController with ChangeNotifier {
   final CityRepository _cityRepository = getIt.get();
