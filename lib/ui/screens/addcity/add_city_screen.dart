@@ -130,8 +130,7 @@ class _CityListWidget extends StatelessWidget {
         return Center(child: CircularProgressIndicator());
       } else {
         final items = value.listItems;
-        return ListView.separated(
-          separatorBuilder: (context, index) => Divider(color: Colors.grey),
+        return ListView.builder(
           itemCount: items.length,
           itemBuilder: (context, index) => AddCityListTile(
               items[index],
