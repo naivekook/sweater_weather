@@ -1,32 +1,31 @@
+import 'package:sweaterweather/data/repository/mapper.dart';
 import 'package:sweaterweather/data/services/weather_service.dart';
 import 'package:sweaterweather/data/storage/city_storage.dart';
 import 'package:sweaterweather/models/city.dart';
-import 'package:sweaterweather/models/location.dart';
+import 'package:sweaterweather/models/city_with_weather.dart';
 
 class CityRepository {
   final WeatherService _weatherService;
   final CityStorage _cityStorage;
+  final mapper = Mapper();
 
   CityRepository(this._weatherService, this._cityStorage);
 
-  Future<List<City>> findCityByName(String name) async {
-    final result = await _weatherService.findCity(name);
+  Future<List<CityWithWeather>> findCityByName(String name) async {
+    final result = await _weatherService.findCityByName(name);
     if (result.isSuccess()) {
-      return result.successValue;
+      return await mapper.mapFindCityResponse(result.successValue);
     } else {
       print("result" + result.errorValue);
       return null;
     }
   }
 
-  Future<City> findCityByLocation(Location location) async {
-    final result = await _weatherService.getWeatherByLocation(location);
+  Future<List<CityWithWeather>> findCityByLocation(
+      double lat, double lon) async {
+    final result = await _weatherService.findCityByLocation(lat, lon);
     if (result.isSuccess()) {
-      return City(
-          id: result.successValue.cityId,
-          name: result.successValue.cityName,
-          country: result.successValue.sys.countryCode,
-          location: result.successValue.location);
+      return await mapper.mapFindCityResponse(result.successValue);
     } else {
       print("result" + result.errorValue);
       return null;

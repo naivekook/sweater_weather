@@ -1,17 +1,18 @@
-import 'dart:collection';
 import 'dart:convert';
 
 import 'package:flutter/services.dart' show rootBundle;
 
-class CountryCodesFormatter {
+class CountryNameFinder {
   List<_Country> parsedCountries;
 
-  Future<String> getFullName(String code) async {
+  Future<String> find(String code) async {
     if (parsedCountries == null) {
       final json = await rootBundle.loadString('assets/country_codes.json');
       parsedCountries = _parseJson(json);
     }
-    return parsedCountries.firstWhere((element) => element.code == code).name;
+    return parsedCountries
+        .firstWhere((e) => e.code.toLowerCase() == code.toLowerCase())
+        .name;
   }
 
   List<_Country> _parseJson(String jsonString) {

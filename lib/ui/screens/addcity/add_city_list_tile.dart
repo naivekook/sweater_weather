@@ -39,7 +39,7 @@ class AddCityListTile extends StatelessWidget {
                             fontWeight: FontWeight.w800)),
                   ),
                   TextSpan(
-                    text: item.city.country,
+                    text: item.city.countryName,
                     style: GoogleFonts.inter(
                         textStyle: TextStyle(
                             color: const Color(0xFF3D3F4E),

@@ -1,36 +1,31 @@
-import 'location.dart';
-
 class City {
   int id;
   String name;
-  String country;
-  Location location;
+  String countryName;
+  String countryCode;
+  double lat;
+  double lon;
 
-  City({this.id, this.name, this.country, this.location});
+  City(this.id, this.name, this.countryName, this.countryCode, this.lat,
+      this.lon);
 
   City.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
-    if (json['sys'] != null) {
-      country = json['sys']['country'];
-    }
-    if (json['coord'] != null) {
-      location = Location.fromJson(json['coord']);
-    }
+    countryName = json['country_name'];
+    countryCode = json['country_code'];
+    lat = json['lat'] as double;
+    lon = json['lon'] as double;
   }
 
   Map<String, dynamic> toJson() {
     final data = Map<String, dynamic>();
     data['id'] = id;
     data['name'] = name;
-    if (location != null) {
-      data['coord'] = location.toJson();
-    }
-    if (country != null) {
-      final countryData = Map<String, dynamic>();
-      countryData['country'] = country;
-      data['sys'] = countryData;
-    }
+    data['country_name'] = countryName;
+    data['country_code'] = countryCode;
+    data['lat'] = lat;
+    data['lon'] = lon;
     return data;
   }
 }

@@ -2,7 +2,6 @@ import 'package:sweaterweather/data/services/weather_service.dart';
 import 'package:sweaterweather/data/storage/detailed_weather_storage.dart';
 import 'package:sweaterweather/models/detailed_weather.dart';
 import 'package:sweaterweather/models/detailed_weather_extended.dart';
-import 'package:sweaterweather/models/location.dart';
 
 class DetailedWeatherRepository {
   final WeatherService _weatherService;
@@ -15,8 +14,8 @@ class DetailedWeatherRepository {
     return items.map((e) => e.weather);
   }
 
-  Future<DetailedWeather> getWeatherForLocation(Location location) async {
-    final result = await _weatherService.getWeatherOneCall(location);
+  Future<DetailedWeather> getWeatherForLocation(double lat, double lon) async {
+    final result = await _weatherService.getWeatherOneCall(lat, lon);
     if (result.isSuccess()) {
       await _saveWeather(result.successValue);
       return result.successValue;
