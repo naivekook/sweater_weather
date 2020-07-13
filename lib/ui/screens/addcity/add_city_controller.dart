@@ -1,8 +1,6 @@
 import 'package:flutter/foundation.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:sweaterweather/data/repository/city_repository.dart';
 import 'package:sweaterweather/main.dart';
-import 'package:sweaterweather/models/city.dart';
 import 'package:sweaterweather/models/city_with_weather.dart';
 import 'package:sweaterweather/ui/screens/addcity/add_city_list_item.dart';
 import 'package:sweaterweather/utils/weather_icon_utils.dart';
@@ -21,22 +19,29 @@ class AddCityController with ChangeNotifier {
     }
     _setProgress(true);
     final cities = await _cityRepository.findCityByName(name);
-    listItems.addAll(_mapToItem(cities));
+    if (cities != null && cities.length > 0) {
+      final items = _mapToItem(cities);
+      final savedCities = await _cityRepository.getCities();
+      if (savedCities != null && savedCities.length > 0) {
+        items.forEach((e) {
+          e.added = savedCities.any((e2) => e2.id == e.city.id);
+        });
+      }
+      listItems.addAll(items);
+    }
     _setProgress(false);
   }
 
-  Future<void> findByCurrentLocation() async {
-    _setProgress(true);
-    listItems.clear();
-    Position pos = await Geolocator()
-        .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
-    final cities =
-        await _cityRepository.findCityByLocation(pos.latitude, pos.longitude);
-    listItems.addAll(_mapToItem(cities));
-    _setProgress(false);
+  Future<void> itemTapped(CityListItem item) async {
+    if (item.added) {
+      await _cityRepository.removeCity(item.city);
+      item.added = false;
+    } else {
+      await _cityRepository.saveCity(item.city);
+      item.added = true;
+    }
+    notifyListeners();
   }
-
-  Future<void> addNewCity(City city) => _cityRepository.saveCity(city);
 
   void _setProgress(bool value) {
     isProgress = value;

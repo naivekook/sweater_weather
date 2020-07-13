@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'package:sweaterweather/models/city.dart';
 import 'package:sweaterweather/ui/screens/addcity/add_city_controller.dart';
+import 'package:sweaterweather/ui/screens/addcity/add_city_list_item.dart';
 import 'package:sweaterweather/ui/screens/addcity/add_city_list_tile.dart';
 import 'package:sweaterweather/utils/debouncer.dart';
 
@@ -16,9 +16,22 @@ class AddCityScreen extends StatelessWidget {
           create: (context) => AddCityController(),
           child: Column(
             children: <Widget>[
-              _TopBarWidget(),
-              _SearchBarWidget(),
-              Expanded(child: _CityListWidget())
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: _TopBarWidget(),
+              ),
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 26, vertical: 0),
+                child: _SearchBarWidget(),
+              ),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                      left: 26, top: 20, right: 26, bottom: 0),
+                  child: _CityListWidget(),
+                ),
+              )
             ],
           ),
         ),
@@ -30,25 +43,26 @@ class AddCityScreen extends StatelessWidget {
 class _TopBarWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8),
-      child: Row(
-        children: <Widget>[
-          IconButton(
-            icon: Icon(Icons.arrow_back_ios),
-            onPressed: () => Navigator.pop(context),
+    return Row(
+      children: <Widget>[
+        IconButton(
+          icon: Icon(
+            Icons.arrow_back_ios,
+            size: 20,
+            color: const Color(0xFF7F808C),
           ),
-          Text(
-            'Add location',
-            style: GoogleFonts.inter(
-                textStyle: TextStyle(
-                    color: const Color(0xFF3D3F4E),
-                    fontSize: 20,
-                    fontStyle: FontStyle.normal,
-                    fontWeight: FontWeight.w800)),
-          )
-        ],
-      ),
+          onPressed: () => Navigator.pop(context),
+        ),
+        Text(
+          'Add location',
+          style: GoogleFonts.inter(
+              textStyle: TextStyle(
+                  color: const Color(0xFF3D3F4E),
+                  fontSize: 20,
+                  fontStyle: FontStyle.normal,
+                  fontWeight: FontWeight.w800)),
+        )
+      ],
     );
   }
 }
@@ -59,65 +73,58 @@ class _SearchBarWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 20.0, bottom: 0.0, left: 20.0, right: 20.0),
-      child: Row(
-        children: <Widget>[
-          Expanded(
-            child: TextField(
-              controller: _controller,
-              textInputAction: TextInputAction.done,
-              keyboardType: TextInputType.text,
-              autofocus: true,
-              maxLines: 1,
-              decoration: InputDecoration(
-                prefixIcon: Icon(
-                  Icons.search,
+    _controller.addListener(() {
+      final text = _controller.text;
+      _debouncer.run(() {
+        Provider.of<AddCityController>(context, listen: false).findByName(text);
+      });
+    });
+    return TextField(
+      controller: _controller,
+      textInputAction: TextInputAction.done,
+      keyboardType: TextInputType.text,
+      autofocus: true,
+      maxLines: 1,
+      decoration: InputDecoration(
+        contentPadding: const EdgeInsets.all(0),
+        prefixIcon: Icon(
+          Icons.search,
+          color: const Color(0xFF7F808C),
+        ),
+        suffixIcon: ValueListenableBuilder(
+          valueListenable: _controller,
+          builder: (context, value, child) => Visibility(
+            visible: (value as TextEditingValue).text.length > 0,
+            child: IconButton(
+                icon: Icon(
+                  Icons.clear,
                   color: const Color(0xFF7F808C),
                 ),
-                suffixIcon: IconButton(
-                    icon: Icon(
-                      Icons.clear,
-                      color: const Color(0xFF7F808C),
-                    ),
-                    onPressed: () {
-                      _controller.clear();
-                    }),
-                hintText: 'Search for location',
-                hintStyle: GoogleFonts.inter(
-                    textStyle: TextStyle(
-                        color: const Color(0xFF7F808C),
-                        fontSize: 14,
-                        fontStyle: FontStyle.normal,
-                        fontWeight: FontWeight.normal)),
-                filled: true,
-                fillColor: const Color(0xFFF5F6F7),
-                focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: const Color(0xFFF5F6F7)),
-                  borderRadius: BorderRadius.circular(9.0),
-                ),
-              ),
-              style: GoogleFonts.inter(
-                  textStyle: TextStyle(
-                      color: const Color(0xFF3D3F4E),
-                      fontSize: 14,
-                      fontStyle: FontStyle.normal,
-                      fontWeight: FontWeight.normal)),
-              onChanged: (text) {
-                _debouncer.run(() {
-                  Provider.of<AddCityController>(context, listen: false).findByName(text);
-                });
-              },
-            ),
+                onPressed: () {
+                  _controller.clear();
+                }),
           ),
-          IconButton(
-            icon: Icon(Icons.my_location),
-            onPressed: () {
-              Provider.of<AddCityController>(context, listen: false).findByCurrentLocation();
-            },
-          )
-        ],
+        ),
+        hintText: 'Search for location',
+        hintStyle: GoogleFonts.inter(
+            textStyle: TextStyle(
+                color: const Color(0xFF7F808C),
+                fontSize: 14,
+                fontStyle: FontStyle.normal,
+                fontWeight: FontWeight.normal)),
+        filled: true,
+        fillColor: const Color(0xFFF5F6F7),
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: const Color(0xFFF5F6F7)),
+          borderRadius: BorderRadius.circular(9.0),
+        ),
       ),
+      style: GoogleFonts.inter(
+          textStyle: TextStyle(
+              color: const Color(0xFF3D3F4E),
+              fontSize: 14,
+              fontStyle: FontStyle.normal,
+              fontWeight: FontWeight.normal)),
     );
   }
 }
@@ -129,13 +136,20 @@ class _CityListWidget extends StatelessWidget {
       if (value.isProgress) {
         return Center(child: CircularProgressIndicator());
       } else {
-        final items = value.listItems;
-        return ListView.builder(
-          itemCount: items.length,
-          itemBuilder: (context, index) => AddCityListTile(
-              items[index],
-              (City city) =>
-                  Provider.of<AddCityController>(context, listen: false).addNewCity(city)),
+        return NotificationListener<OverscrollIndicatorNotification>(
+          onNotification: (OverscrollIndicatorNotification overscroll) {
+            overscroll.disallowGlow();
+            return false;
+          },
+          child: ListView.separated(
+            separatorBuilder: (context, index) => Divider(color: Colors.white),
+            itemCount: value.listItems.length,
+            itemBuilder: (context, index) => AddCityListTile(
+                value.listItems[index],
+                (CityListItem item) =>
+                    Provider.of<AddCityController>(context, listen: false)
+                        .itemTapped(item)),
+          ),
         );
       }
     });

@@ -34,7 +34,7 @@ class CityRepository {
 
   Future<void> saveCity(City city) async {
     final List<City> cities = await _cityStorage.get();
-    if (!cities.contains(city)) {
+    if (!cities.any((element) => element.id == city.id)) {
       cities.add(city);
       await _cityStorage.save(cities);
     }
@@ -42,8 +42,8 @@ class CityRepository {
 
   Future<void> removeCity(City city) async {
     final List<City> cities = await _cityStorage.get();
-    if (cities.contains(city)) {
-      cities.remove(city);
+    if (cities.any((element) => element.id == city.id)) {
+      cities.removeWhere((element) => element.id == city.id);
       await _cityStorage.save(cities);
     }
   }
