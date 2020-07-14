@@ -29,4 +29,5 @@ flutter:
   assets:
     - .env
     - assets/images/
-    - country_codes.json
+    - assets/illustrations/
+    - assets/country_codes.json

@@ -21,14 +21,12 @@ class AddCityScreen extends StatelessWidget {
                 child: _TopBarWidget(),
               ),
               Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 26, vertical: 0),
+                padding: const EdgeInsets.symmetric(horizontal: 26, vertical: 0),
                 child: _SearchBarWidget(),
               ),
               Expanded(
                 child: Padding(
-                  padding: const EdgeInsets.only(
-                      left: 26, top: 20, right: 26, bottom: 0),
+                  padding: const EdgeInsets.only(left: 26, top: 20, right: 26, bottom: 0),
                   child: _CityListWidget(),
                 ),
               )
@@ -147,8 +145,7 @@ class _CityListWidget extends StatelessWidget {
             itemBuilder: (context, index) => AddCityListTile(
                 value.listItems[index],
                 (CityListItem item) =>
-                    Provider.of<AddCityController>(context, listen: false)
-                        .itemTapped(item)),
+                    Provider.of<AddCityController>(context, listen: false).itemTapped(item)),
           ),
         );
       }

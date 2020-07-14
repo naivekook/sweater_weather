@@ -17,29 +17,33 @@ class WeatherScreen extends StatelessWidget {
       child: Scaffold(
         backgroundColor: const Color(0xFFDDEEF3),
         body: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              children: <Widget>[
-                _TopBarWidget(),
-                Padding(
-                  padding: const EdgeInsets.all(48.0),
-                  child: _WeatherAdditionalProperties(),
+          child: Column(
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.all(8),
+                child: _TopBarWidget(),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 58),
+                child: _WeatherWidget(),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 58),
+                child: _WeatherAdditionalProperties(),
+              ),
+              OutlineButton(
+                child: Text(
+                  'More details',
+                  style: GoogleFonts.inter(
+                      textStyle: TextStyle(
+                          color: const Color(0xFF3D3F4E),
+                          fontSize: 14,
+                          fontStyle: FontStyle.normal,
+                          fontWeight: FontWeight.w800)),
                 ),
-                OutlineButton(
-                  child: Text(
-                    'More details',
-                    style: GoogleFonts.inter(
-                        textStyle: TextStyle(
-                            color: const Color(0xFF3D3F4E),
-                            fontSize: 14,
-                            fontStyle: FontStyle.normal,
-                            fontWeight: FontWeight.w800)),
-                  ),
-                  onPressed: () => Navigator.pop(context),
-                )
-              ],
-            ),
+                onPressed: () => Navigator.pop(context),
+              )
+            ],
           ),
         ),
       ),
@@ -50,13 +54,16 @@ class WeatherScreen extends StatelessWidget {
 class _TopBarWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final info =
-        Provider.of<WeatherController>(context, listen: false).getHeaderInfo();
+    final info = Provider.of<WeatherController>(context, listen: false).getHeaderInfo();
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         IconButton(
-          icon: Icon(Icons.arrow_back_ios),
+          icon: Icon(
+            Icons.arrow_back_ios,
+            size: 20,
+            color: const Color(0xFF7F808C),
+          ),
           onPressed: () => Navigator.pop(context),
         ),
         Column(
@@ -71,7 +78,7 @@ class _TopBarWidget extends StatelessWidget {
                       fontStyle: FontStyle.normal,
                       fontWeight: FontWeight.w800)),
             ),
-            SizedBox(height: 6),
+            SizedBox(height: 8),
             Text(
               info.date,
               style: GoogleFonts.inter(
@@ -98,6 +105,73 @@ class _TopBarWidget extends StatelessWidget {
   }
 }
 
+class _WeatherWidget extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: <Widget>[
+        Container(
+          alignment: Alignment.topRight,
+          child: Image(image: AssetImage('assets/illustrations/few_clouds_day.png')),
+        ),
+        Align(
+          alignment: Alignment.bottomLeft,
+          child: Padding(
+            padding: const EdgeInsets.only(top: 20),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+
+              children: <Widget>[
+                Text(
+                  '12',
+                  style: GoogleFonts.inter(
+                      textStyle: TextStyle(
+                          color: const Color(0xFF3D3F4E),
+                          fontSize: 112,
+                          fontStyle: FontStyle.normal,
+                          fontWeight: FontWeight.w800)),
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      'o',
+                      style: GoogleFonts.inter(
+                          textStyle: TextStyle(
+                              color: const Color(0xFF3D3F4E),
+                              fontSize: 44,
+                              fontStyle: FontStyle.normal,
+                              fontWeight: FontWeight.w800)),
+                    ),
+                    Text(
+                      'Mostly cloudy',
+                      style: GoogleFonts.inter(
+                          textStyle: TextStyle(
+                              color: const Color(0xFF3D3F4E),
+                              fontSize: 14,
+                              fontStyle: FontStyle.normal,
+                              fontWeight: FontWeight.normal)),
+                    ),
+                    Text(
+                      'Feels like 11°C',
+                      style: GoogleFonts.inter(
+                          textStyle: TextStyle(
+                              color: const Color(0xFF3D3F4E),
+                              fontSize: 14,
+                              fontStyle: FontStyle.normal,
+                              fontWeight: FontWeight.normal)),
+                    ),
+                  ],
+                )
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
 class _WeatherAdditionalProperties extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -108,15 +182,13 @@ class _WeatherAdditionalProperties extends StatelessWidget {
           children: <Widget>[
             Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: _listWithDividers(items.take(3).map((item) =>
-                    SinglePropertyWidget(
-                        title: item.title, subtitle: item.subtitle)))),
+                children: _listWithDividers(items.take(3).map(
+                    (item) => SinglePropertyWidget(title: item.title, subtitle: item.subtitle)))),
             SizedBox(width: 50),
             Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: _listWithDividers(items.skip(3).map((item) =>
-                    SinglePropertyWidget(
-                        title: item.title, subtitle: item.subtitle)))),
+                children: _listWithDividers(items.skip(3).map(
+                    (item) => SinglePropertyWidget(title: item.title, subtitle: item.subtitle)))),
           ],
         );
       } else {
