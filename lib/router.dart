@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:sweaterweather/models/city.dart';
+import 'package:sweaterweather/ui/screens/about/about_screen.dart';
 import 'package:sweaterweather/ui/screens/addcity/add_city_screen.dart';
 import 'package:sweaterweather/ui/screens/home/home_screen.dart';
 import 'package:sweaterweather/ui/screens/weather/weather_screen.dart';
@@ -10,6 +11,7 @@ class Router {
   static const String HOME = '/';
   static const String ADD_CITY = '/addcity';
   static const String WEATHER = '/weather';
+  static const String ABOUT = '/about';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -20,11 +22,12 @@ class Router {
       case WEATHER:
         final city = settings.arguments as City;
         return CupertinoPageRoute(builder: (context) => WeatherScreen(city));
+      case ABOUT:
+        return CupertinoPageRoute(builder: (context) => AboutScreen());
       default:
         return CupertinoPageRoute(
             builder: (_) => Scaffold(
-                  body: Center(
-                      child: Text('No route defined for ${settings.name}')),
+                  body: Center(child: Text('No route defined for ${settings.name}')),
                 ));
     }
   }

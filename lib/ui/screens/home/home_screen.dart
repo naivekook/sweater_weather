@@ -12,30 +12,11 @@ class HomeScreen extends StatelessWidget {
       create: (context) => HomeController(),
       child: Scaffold(
         backgroundColor: Colors.white,
-        drawer: Drawer(
-          child: ListView(
-            padding: EdgeInsets.symmetric(vertical: 34.0, horizontal: 0.0),
-            children: <Widget>[
-              ListTile(
-                title: Text('Item 1'),
-                onTap: () => print('Item 1'),
-              ),
-              ListTile(
-                title: Text('Item 2'),
-                onTap: () => print('Item 2'),
-              ),
-              ListTile(
-                title: Text('Item 3'),
-                onTap: () => print('Item 3'),
-              ),
-            ],
-          ),
-        ),
         body: SafeArea(
           child: Column(
             children: <Widget>[
               Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.only(left: 24, top: 8, right: 8, bottom: 8),
                 child: _TopBarWidget(),
               ),
               Expanded(
@@ -79,19 +60,34 @@ class _TopBarWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: <Widget>[
-        IconButton(
-          icon: Icon(Icons.menu, color: const Color(0xFF7F808C)),
-          onPressed: () => Scaffold.of(context).openDrawer(),
+        Expanded(
+          child: Text(
+            'My locations',
+            style: GoogleFonts.inter(
+                textStyle: TextStyle(
+                    color: const Color(0xFF3D3F4E),
+                    fontSize: 20,
+                    fontStyle: FontStyle.normal,
+                    fontWeight: FontWeight.w800)),
+          ),
         ),
-        Text(
-          'My locations',
-          style: GoogleFonts.inter(
-              textStyle: TextStyle(
-                  color: const Color(0xFF3D3F4E),
-                  fontSize: 20,
-                  fontStyle: FontStyle.normal,
-                  fontWeight: FontWeight.w800)),
-        ),
+        PopupMenuButton(
+            itemBuilder: (context) => [
+                  PopupMenuItem(
+                      value: 1,
+                      child: Text("About",
+                          style: GoogleFonts.inter(
+                              textStyle: TextStyle(
+                                  color: const Color(0xFF3D3F4E),
+                                  fontSize: 14,
+                                  fontStyle: FontStyle.normal,
+                                  fontWeight: FontWeight.normal)))),
+                ],
+            onSelected: (value) {
+              if (value == 1) {
+                Navigator.pushNamed(context, Router.ABOUT);
+              }
+            }),
       ],
     );
   }
