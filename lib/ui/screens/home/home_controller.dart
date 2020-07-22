@@ -5,6 +5,7 @@ import 'package:sweaterweather/main.dart';
 import 'package:sweaterweather/models/city.dart';
 import 'package:sweaterweather/models/weather.dart';
 import 'package:sweaterweather/ui/screens/home/location_list_item.dart';
+import 'package:sweaterweather/utils/weather_icon_utils.dart';
 
 class HomeController with ChangeNotifier {
   final CityRepository _cityRepository = getIt.get();
@@ -23,14 +24,9 @@ class HomeController with ChangeNotifier {
       weatherList.add(await _weatherRepository.getWeatherForCity(city));
     }
     cities = savedCities.map((city) {
-      final weather =
-          weatherList.firstWhere((element) => element.cityId == city.id);
-      final condition = weather.weather.first;
-      return LocationListItem(
-          city,
-          condition.description,
-          weather.main.temp.toInt(),
-          'http://openweathermap.org/img/wn/${condition.icon}@2x.png');
+      final weather = weatherList.firstWhere((element) => element.cityId == city.id);
+      return LocationListItem(city, weather.description, weather.temp.toInt(),
+          WeatherIconUtils.codeToIllustration(weather.icon));
     }).toList();
     notifyListeners();
   }

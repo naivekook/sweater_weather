@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:sweaterweather/models/city.dart';
 import 'package:sweaterweather/ui/screens/weather/weather_controller.dart';
 import 'package:sweaterweather/ui/widgets/single_property_widget.dart';
+import 'package:sweaterweather/utils/weather_icon_utils.dart';
 
 class WeatherScreen extends StatelessWidget {
   final City city;
@@ -31,18 +33,6 @@ class WeatherScreen extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 58),
                 child: _WeatherAdditionalProperties(),
               ),
-              OutlineButton(
-                child: Text(
-                  'More details',
-                  style: GoogleFonts.inter(
-                      textStyle: TextStyle(
-                          color: const Color(0xFF3D3F4E),
-                          fontSize: 14,
-                          fontStyle: FontStyle.normal,
-                          fontWeight: FontWeight.w800)),
-                ),
-                onPressed: () => Navigator.pop(context),
-              )
             ],
           ),
         ),
@@ -108,67 +98,67 @@ class _TopBarWidget extends StatelessWidget {
 class _WeatherWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: <Widget>[
-        Container(
-          alignment: Alignment.topRight,
-          child: Image(image: AssetImage('assets/illustrations/few_clouds_day.png')),
-        ),
-        Align(
-          alignment: Alignment.bottomLeft,
-          child: Padding(
-            padding: const EdgeInsets.only(top: 20),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-
-              children: <Widget>[
-                Text(
-                  '12',
-                  style: GoogleFonts.inter(
-                      textStyle: TextStyle(
-                          color: const Color(0xFF3D3F4E),
-                          fontSize: 112,
-                          fontStyle: FontStyle.normal,
-                          fontWeight: FontWeight.w800)),
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+    return Consumer<WeatherController>(builder: (context, value, child) {
+      if (value.weather == null) {
+        return Container();
+      } else {
+        return Stack(
+          children: <Widget>[
+            Container(
+              alignment: Alignment.topRight,
+              child:
+                  Image(image: AssetImage(WeatherIconUtils.codeToIllustration(value.weather.icon))),
+            ),
+            Align(
+              alignment: Alignment.bottomLeft,
+              child: Padding(
+                padding: const EdgeInsets.only(top: 24),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                      'o',
+                      value.weather.temp.toInt().toString(),
                       style: GoogleFonts.inter(
                           textStyle: TextStyle(
                               color: const Color(0xFF3D3F4E),
-                              fontSize: 44,
+                              fontSize: 112,
                               fontStyle: FontStyle.normal,
                               fontWeight: FontWeight.w800)),
                     ),
-                    Text(
-                      'Mostly cloudy',
-                      style: GoogleFonts.inter(
-                          textStyle: TextStyle(
-                              color: const Color(0xFF3D3F4E),
-                              fontSize: 14,
-                              fontStyle: FontStyle.normal,
-                              fontWeight: FontWeight.normal)),
-                    ),
-                    Text(
-                      'Feels like 11°C',
-                      style: GoogleFonts.inter(
-                          textStyle: TextStyle(
-                              color: const Color(0xFF3D3F4E),
-                              fontSize: 14,
-                              fontStyle: FontStyle.normal,
-                              fontWeight: FontWeight.normal)),
-                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        SvgPicture.asset('assets/images/donut.svg', width: 42, height: 42),
+                        SizedBox(height: 8),
+                        Text(
+                          value.weather.description,
+                          style: GoogleFonts.inter(
+                              textStyle: TextStyle(
+                                  color: const Color(0xFF3D3F4E),
+                                  fontSize: 14,
+                                  fontStyle: FontStyle.normal,
+                                  fontWeight: FontWeight.normal)),
+                        ),
+                        SizedBox(height: 2),
+                        Text(
+                          'Feels like ${value.weather.tempFeelsLike.toInt()}°C',
+                          style: GoogleFonts.inter(
+                              textStyle: TextStyle(
+                                  color: const Color(0xFF3D3F4E),
+                                  fontSize: 14,
+                                  fontStyle: FontStyle.normal,
+                                  fontWeight: FontWeight.normal)),
+                        ),
+                      ],
+                    )
                   ],
-                )
-              ],
+                ),
+              ),
             ),
-          ),
-        ),
-      ],
-    );
+          ],
+        );
+      }
+    });
   }
 }
 

@@ -1,7 +1,8 @@
 class WeatherIconUtils {
   static const String _imagesFolder = 'assets/images';
+  static const String _illustrationsFolder = 'assets/illustrations';
 
-  static String iconCodeToPath(String iconCode) {
+  static String codeToImage(String iconCode) {
     String name;
     switch (iconCode.substring(0, 2)) {
       case '01':
@@ -33,5 +34,39 @@ class WeatherIconUtils {
         break;
     }
     return name != null ? '$_imagesFolder/$name.svg' : null;
+  }
+
+  static String codeToIllustration(String iconCode) {
+    String name;
+    switch (iconCode.substring(0, 2)) {
+      case '01':
+        name = 'clear_sky_day';
+        break;
+      case '02':
+        name = 'few_clouds_day';
+        break;
+      case '03':
+        name = 'scattered_clouds_day';
+        break;
+      case '04':
+        name = 'broken_clouds_day';
+        break;
+      case '09':
+        name = 'shower_rain_day';
+        break;
+      case '10':
+        name = 'rain_day';
+        break;
+      case '11':
+        name = 'thunderstorm_day';
+        break;
+      case '13':
+        name = 'snow_day';
+        break;
+      case '50':
+        name = 'mist_day';
+        break;
+    }
+    return name != null ? '$_illustrationsFolder/$name.png' : null;
   }
 }

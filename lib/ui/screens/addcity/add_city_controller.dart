@@ -52,9 +52,9 @@ class AddCityController with ChangeNotifier {
     return cities
         .map((e) => CityListItem(
             e.city,
-            WeatherIconUtils.iconCodeToPath(e.icon),
-            e.temp.toInt(),
-            e.weather,
+            WeatherIconUtils.codeToImage(e.weather.icon),
+            e.weather.temp.toInt(),
+            e.weather.description,
             false))
         .toList();
   }

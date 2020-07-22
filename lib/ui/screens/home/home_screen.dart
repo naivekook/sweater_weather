@@ -80,7 +80,7 @@ class _TopBarWidget extends StatelessWidget {
     return Row(
       children: <Widget>[
         IconButton(
-          icon: Icon(Icons.menu),
+          icon: Icon(Icons.menu, color: const Color(0xFF7F808C)),
           onPressed: () => Scaffold.of(context).openDrawer(),
         ),
         Text(
@@ -91,7 +91,7 @@ class _TopBarWidget extends StatelessWidget {
                   fontSize: 20,
                   fontStyle: FontStyle.normal,
                   fontWeight: FontWeight.w800)),
-        )
+        ),
       ],
     );
   }
@@ -145,7 +145,10 @@ class _CityListItemWidget extends StatelessWidget {
           children: <Widget>[
             Container(
               alignment: Alignment.centerRight,
-              child: Image.network(data.image),
+              child: Padding(
+                padding: const EdgeInsets.all(24),
+                child: Image(image: AssetImage(data.image)),
+              ),
             ),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 0.0, horizontal: 27.0),

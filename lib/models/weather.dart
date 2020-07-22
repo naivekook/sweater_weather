@@ -1,195 +1,66 @@
-import 'package:sweaterweather/models/location.dart';
-import 'package:sweaterweather/models/rain.dart';
-import 'package:sweaterweather/models/snow.dart';
-import 'package:sweaterweather/models/weather_condition.dart';
-
 class Weather {
-  Location location;
-  List<WeatherCondition> weather;
-  Main main;
-  Wind wind;
-  Clouds clouds;
-  Sys sys;
-  Rain rain;
-  Snow snow;
-  int cityId;
-  String cityName;
-  int timezone;
   int timestamp;
-  int visibility;
-
-  Weather(
-      {this.location,
-      this.weather,
-      this.main,
-      this.visibility,
-      this.wind,
-      this.clouds,
-      this.timestamp,
-      this.sys,
-      this.timezone,
-      this.cityId,
-      this.cityName});
-
-  Weather.fromJson(Map<String, dynamic> json) {
-    timestamp = json['dt'];
-    visibility = json['visibility'];
-    timezone = json['timezone'];
-    cityId = json['id'];
-    cityName = json['name'];
-    if (json['coord'] != null) {
-      location = Location.fromJson(json['coord']);
-    }
-    if (json['weather'] != null) {
-      weather = new List<WeatherCondition>();
-      json['weather'].forEach((v) {
-        weather.add(new WeatherCondition.fromJson(v));
-      });
-    }
-    if (json['main'] != null) {
-      main = Main.fromJson(json['main']);
-    }
-    if (json['wind'] != null) {
-      wind = Wind.fromJson(json['wind']);
-    }
-    if (json['clouds'] != null) {
-      clouds = Clouds.fromJson(json['clouds']);
-    }
-    if (json['rain'] != null) {
-      rain = Rain.fromJson(json['rain']);
-    }
-    if (json['snow'] != null) {
-      snow = Snow.fromJson(json['snow']);
-    }
-    if (json['sys'] != null) {
-      sys = Sys.fromJson(json['sys']);
-    }
-  }
-
-  Map<String, dynamic> toJson() {
-    final data = Map<String, dynamic>();
-    data['dt'] = timestamp;
-    data['visibility'] = visibility;
-    data['timezone'] = timezone;
-    data['id'] = cityId;
-    data['name'] = cityName;
-    if (location != null) {
-      data['coord'] = location.toJson();
-    }
-    if (weather != null) {
-      data['weather'] = weather.map((v) => v.toJson()).toList();
-    }
-    if (main != null) {
-      data['main'] = main.toJson();
-    }
-    if (wind != null) {
-      data['wind'] = wind.toJson();
-    }
-    if (clouds != null) {
-      data['clouds'] = clouds.toJson();
-    }
-    if (rain != null) {
-      data['rain'] = rain.toJson();
-    }
-    if (snow != null) {
-      data['snow'] = snow.toJson();
-    }
-    if (sys != null) {
-      data['sys'] = sys.toJson();
-    }
-    return data;
-  }
-}
-
-class Main {
+  int cityId;
+  double lat;
+  double lon;
   double temp;
-  double feelsLike;
-  double tempMin;
-  double tempMax;
+  double tempFeelsLike;
+  String description;
+  String icon;
   int pressure;
   int humidity;
-
-  Main({temp, feelsLike, tempMin, tempMax, pressure, humidity});
-
-  Main.fromJson(Map<String, dynamic> json) {
-    temp = json['temp'].toDouble();
-    feelsLike = json['feels_like'].toDouble();
-    tempMin = json['temp_min'].toDouble();
-    tempMax = json['temp_max'].toDouble();
-    pressure = json['pressure'];
-    humidity = json['humidity'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final data = Map<String, dynamic>();
-    data['temp'] = temp;
-    data['feels_like'] = feelsLike;
-    data['temp_min'] = tempMin;
-    data['temp_max'] = tempMax;
-    data['pressure'] = pressure;
-    data['humidity'] = humidity;
-    return data;
-  }
-}
-
-class Wind {
-  double speed;
-  int deg;
-  double gust;
-
-  Wind({speed, deg, gust});
-
-  Wind.fromJson(Map<String, dynamic> json) {
-    speed = json['speed'].toDouble();
-    deg = json['deg']?.toInt();
-    gust = json['gust']?.toDouble();
-  }
-
-  Map<String, dynamic> toJson() {
-    final data = Map<String, dynamic>();
-    data['speed'] = speed;
-    if (deg != null) {
-      data['deg'] = deg;
-    }
-    if (gust != null) {
-      data['gust'] = gust;
-    }
-    return data;
-  }
-}
-
-class Clouds {
-  int all;
-
-  Clouds({all});
-
-  Clouds.fromJson(Map<String, dynamic> json) {
-    all = json['all'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final data = Map<String, dynamic>();
-    data['all'] = all;
-    return data;
-  }
-}
-
-class Sys {
-  String countryCode;
+  double windSpeed;
+  int cloudiness;
   int sunrise;
   int sunset;
 
-  Sys({countryCode, sunrise, sunset});
+  Weather(
+      this.timestamp,
+      this.cityId,
+      this.lat,
+      this.lon,
+      this.temp,
+      this.tempFeelsLike,
+      this.description,
+      this.icon,
+      this.pressure,
+      this.humidity,
+      this.windSpeed,
+      this.cloudiness,
+      this.sunrise,
+      this.sunset);
 
-  Sys.fromJson(Map<String, dynamic> json) {
-    countryCode = json['country'];
+  Weather.fromJson(Map<String, dynamic> json) {
+    timestamp = json['timestamp'];
+    cityId = json['city_id'];
+    lat = json['lat'].toDouble();
+    lon = json['lon'].toDouble();
+    temp = json['temp'].toDouble();
+    tempFeelsLike = json['temp_feels_like'].toDouble();
+    description = json['weather_description'];
+    icon = json['weather_icon'];
+    pressure = json['pressure'];
+    humidity = json['humidity'];
+    windSpeed = json['wind_speed'];
+    cloudiness = json['cloudiness'];
     sunrise = json['sunrise'];
     sunset = json['sunset'];
   }
 
   Map<String, dynamic> toJson() {
     final data = Map<String, dynamic>();
-    data['country'] = countryCode;
+    data['timestamp'] = timestamp;
+    data['city_id'] = cityId;
+    data['lat'] = lat;
+    data['lon'] = lon;
+    data['temp'] = temp;
+    data['temp_feels_like'] = tempFeelsLike;
+    data['weather_description'] = description;
+    data['weather_icon'] = icon;
+    data['pressure'] = pressure;
+    data['humidity'] = humidity;
+    data['wind_speed'] = windSpeed;
+    data['cloudiness'] = cloudiness;
     data['sunrise'] = sunrise;
     data['sunset'] = sunset;
     return data;

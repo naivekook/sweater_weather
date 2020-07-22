@@ -1,0 +1,6 @@
+class WeatherExpirationService {
+
+  bool isWeatherExpired() {
+
+  }
+}
