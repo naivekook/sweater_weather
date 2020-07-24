@@ -26,7 +26,7 @@ class WeatherScreen extends StatelessWidget {
                 child: _TopBarWidget(),
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 58),
+                padding: const EdgeInsets.only(left: 58, top: 8, right: 34, bottom: 8),
                 child: _WeatherWidget(),
               ),
               Padding(
@@ -128,26 +128,32 @@ class _WeatherWidget extends StatelessWidget {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        SvgPicture.asset('assets/images/donut.svg', width: 42, height: 42),
+                        SvgPicture.asset('assets/images/donut.svg', width: 40, height: 40),
                         SizedBox(height: 8),
-                        Text(
-                          value.weather.description,
-                          style: GoogleFonts.inter(
-                              textStyle: TextStyle(
-                                  color: const Color(0xFF3D3F4E),
-                                  fontSize: 14,
-                                  fontStyle: FontStyle.normal,
-                                  fontWeight: FontWeight.normal)),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 2),
+                          child: Text(
+                            value.weather.description,
+                            style: GoogleFonts.inter(
+                                textStyle: TextStyle(
+                                    color: const Color(0xFF3D3F4E),
+                                    fontSize: 14,
+                                    fontStyle: FontStyle.normal,
+                                    fontWeight: FontWeight.normal)),
+                          ),
                         ),
                         SizedBox(height: 2),
-                        Text(
-                          'Feels like ${value.weather.tempFeelsLike.toInt()}°C',
-                          style: GoogleFonts.inter(
-                              textStyle: TextStyle(
-                                  color: const Color(0xFF3D3F4E),
-                                  fontSize: 14,
-                                  fontStyle: FontStyle.normal,
-                                  fontWeight: FontWeight.normal)),
+                        Padding(
+                          padding: const EdgeInsets.only(left:2),
+                          child: Text(
+                            'Feels like ${value.weather.tempFeelsLike.toInt()}°C',
+                            style: GoogleFonts.inter(
+                                textStyle: TextStyle(
+                                    color: const Color(0xFF3D3F4E),
+                                    fontSize: 14,
+                                    fontStyle: FontStyle.normal,
+                                    fontWeight: FontWeight.normal)),
+                          ),
                         ),
                       ],
                     )
