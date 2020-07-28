@@ -129,53 +129,55 @@ class _CityListItemWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: 310,
-      height: 93,
-      child: Container(
-        decoration: BoxDecoration(
-          color: const Color(0xFFDDEEF3),
-          borderRadius: BorderRadius.all(const Radius.circular(8)),
-        ),
-        child: Stack(
-          children: <Widget>[
-            Container(
-              alignment: Alignment.centerRight,
-              child: Padding(
-                padding: const EdgeInsets.all(24),
-                child: Image(image: AssetImage(data.image)),
-              ),
+    return Container(
+      height: 94,
+      decoration: BoxDecoration(
+        color: const Color(0xFFDDEEF3),
+        borderRadius: BorderRadius.all(const Radius.circular(8)),
+      ),
+      child: Stack(
+        children: <Widget>[
+          Container(
+            alignment: Alignment.centerRight,
+            child: Padding(
+              padding: const EdgeInsets.all(24),
+              child: Image(image: AssetImage(data.image)),
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 0.0, horizontal: 27.0),
-              child: Row(
-                children: <Widget>[
-                  Text(
-                    '${data.temp}°',
-                    style: GoogleFonts.inter(
-                        textStyle: TextStyle(
-                            color: const Color(0xFF3D3F4E),
-                            fontSize: 52,
-                            fontStyle: FontStyle.normal,
-                            fontWeight: FontWeight.w800)),
-                  ),
-                  SizedBox(width: 15),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Text(
-                        data.city.name,
-                        style: GoogleFonts.inter(
-                            textStyle: TextStyle(
-                                color: const Color(0xFF3D3F4E),
-                                fontSize: 20,
-                                fontStyle: FontStyle.normal,
-                                fontWeight: FontWeight.w800)),
-                      ),
-                      SizedBox(height: 5),
-                      Text(
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 0.0, horizontal: 27.0),
+            child: Row(
+              children: <Widget>[
+                Text(
+                  '${data.temp}°',
+                  style: GoogleFonts.inter(
+                      textStyle: TextStyle(
+                          color: const Color(0xFF3D3F4E),
+                          fontSize: 52,
+                          fontStyle: FontStyle.normal,
+                          fontWeight: FontWeight.w800)),
+                ),
+                SizedBox(width: 15),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Text(
+                      data.city.name,
+                      style: GoogleFonts.inter(
+                          textStyle: TextStyle(
+                              color: const Color(0xFF3D3F4E),
+                              fontSize: 20,
+                              fontStyle: FontStyle.normal,
+                              fontWeight: FontWeight.w800)),
+                    ),
+                    SizedBox(height: 5),
+                    SizedBox(
+                      width: 150,
+                      child: Text(
                         data.weatherDescription,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
                         style: GoogleFonts.inter(
                             textStyle: TextStyle(
                                 color: const Color(0xFF7F808C),
@@ -183,13 +185,13 @@ class _CityListItemWidget extends StatelessWidget {
                                 fontStyle: FontStyle.normal,
                                 fontWeight: FontWeight.normal)),
                       ),
-                    ],
-                  ),
-                ],
-              ),
-            )
-          ],
-        ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          )
+        ],
       ),
     );
   }

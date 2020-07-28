@@ -16,7 +16,7 @@ class WeatherController with ChangeNotifier {
   String errorMessage;
 
   WeatherController(this._city) {
-    _weatherRepository.getWeatherForLocation(_city.lat, _city.lon).then((value) {
+    _weatherRepository.getWeatherForCity(_city).then((value) {
       weather = value;
       notifyListeners();
     });
