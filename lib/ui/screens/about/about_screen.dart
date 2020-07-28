@@ -1,6 +1,8 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class AboutScreen extends StatelessWidget {
   @override
@@ -14,6 +16,41 @@ class AboutScreen extends StatelessWidget {
               padding: const EdgeInsets.all(8.0),
               child: _TopBarWidget(),
             ),
+            RichText(
+              text: TextSpan(children: [
+                TextSpan(
+                  text: 'The weather data is provided by ',
+                  style: GoogleFonts.inter(
+                      textStyle: TextStyle(
+                          color: const Color(0xFF3D3F4E),
+                          fontSize: 14,
+                          fontStyle: FontStyle.normal,
+                          fontWeight: FontWeight.normal)),
+                ),
+                TextSpan(
+                  text: 'OpenWeatherMap',
+                  style: GoogleFonts.inter(
+                      textStyle: TextStyle(
+                          color: Colors.blue,
+                          fontSize: 14,
+                          fontStyle: FontStyle.normal,
+                          fontWeight: FontWeight.normal)),
+                  recognizer: TapGestureRecognizer()
+                    ..onTap = () {
+                      launch('https://openweathermap.org/');
+                    },
+                ),
+                TextSpan(
+                  text: '.',
+                  style: GoogleFonts.inter(
+                      textStyle: TextStyle(
+                          color: const Color(0xFF3D3F4E),
+                          fontSize: 14,
+                          fontStyle: FontStyle.normal,
+                          fontWeight: FontWeight.normal)),
+                ),
+              ]),
+            )
           ],
         ),
       ),
