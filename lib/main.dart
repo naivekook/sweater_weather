@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get_it/get_it.dart';
 import 'package:sweaterweather/data/api/weather_api.dart';
@@ -23,6 +24,9 @@ Future<void> main() async {
 
   getIt.registerSingleton(CityRepository(_weatherApi, CityStorage()));
   getIt.registerSingleton(WeatherRepository(_weatherApi, WeatherStorage()));
+
+  SystemChrome.setSystemUIOverlayStyle(
+      SystemUiOverlayStyle.dark.copyWith(statusBarColor: Colors.transparent));
 
   runZoned(() {
     runApp(MyApp());
