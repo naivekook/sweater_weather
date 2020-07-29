@@ -18,26 +18,16 @@ class WeatherRepository {
 
   Future<Weather> getWeatherForCity(City city) async {
     final result = await _weatherApi.getWeatherByCityId(city.id);
-    if (result.isSuccess()) {
-      final weather = _mapper.mapWeatherResponse(result.successValue);
-      await _saveWeather(weather);
-      return weather;
-    } else {
-      print(result.errorValue);
-      return null;
-    }
+    final weather = _mapper.mapWeatherResponse(result);
+    await _saveWeather(weather);
+    return weather;
   }
 
   Future<Weather> getWeatherForLocation(double lat, double lon) async {
     final result = await _weatherApi.getWeatherByLocation(lat, lon);
-    if (result.isSuccess()) {
-      final weather = _mapper.mapWeatherResponse(result.successValue);
-      await _saveWeather(weather);
-      return weather;
-    } else {
-      print(result.errorValue);
-      return null;
-    }
+    final weather = _mapper.mapWeatherResponse(result);
+    await _saveWeather(weather);
+    return weather;
   }
 
   Future<void> _saveWeather(Weather weather) async {

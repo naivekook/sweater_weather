@@ -13,23 +13,12 @@ class CityRepository {
 
   Future<List<CityWithWeather>> findCityByName(String name) async {
     final result = await _weatherApi.findCityByName(name);
-    if (result.isSuccess()) {
-      return await _mapper.mapFindCityResponse(result.successValue);
-    } else {
-      print("result" + result.errorValue);
-      return null;
-    }
+    return await _mapper.mapFindCityResponse(result);
   }
 
-  Future<List<CityWithWeather>> findCityByLocation(
-      double lat, double lon) async {
+  Future<List<CityWithWeather>> findCityByLocation(double lat, double lon) async {
     final result = await _weatherApi.findCityByLocation(lat, lon);
-    if (result.isSuccess()) {
-      return await _mapper.mapFindCityResponse(result.successValue);
-    } else {
-      print("result" + result.errorValue);
-      return null;
-    }
+    return await _mapper.mapFindCityResponse(result);
   }
 
   Future<void> saveCity(City city) async {
