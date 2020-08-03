@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
+import 'package:sweaterweather/app_starter.dart';
 import 'package:sweaterweather/data/repository/city_repository.dart';
-import 'package:sweaterweather/main.dart';
 import 'package:sweaterweather/models/city_with_weather.dart';
 import 'package:sweaterweather/ui/screens/addcity/add_city_list_item.dart';
 import 'package:sweaterweather/utils/weather_icon_utils.dart';
@@ -50,12 +50,8 @@ class AddCityController with ChangeNotifier {
 
   List<CityListItem> _mapToItem(List<CityWithWeather> cities) {
     return cities
-        .map((e) => CityListItem(
-            e.city,
-            WeatherIconUtils.codeToImage(e.weather.icon),
-            e.weather.temp.toInt(),
-            e.weather.description,
-            false))
+        .map((e) => CityListItem(e.city, WeatherIconUtils.codeToImage(e.weather.icon),
+            e.weather.temp.toInt(), e.weather.description, false))
         .toList();
   }
 }

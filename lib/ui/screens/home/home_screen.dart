@@ -74,14 +74,17 @@ class _TopBarWidget extends StatelessWidget {
         PopupMenuButton(
             itemBuilder: (context) => [
                   PopupMenuItem(
-                      value: 1,
-                      child: Text("About",
-                          style: GoogleFonts.inter(
-                              textStyle: TextStyle(
-                                  color: const Color(0xFF3D3F4E),
-                                  fontSize: 14,
-                                  fontStyle: FontStyle.normal,
-                                  fontWeight: FontWeight.normal)))),
+                    value: 1,
+                    child: Text(
+                      'About',
+                      style: GoogleFonts.inter(
+                          textStyle: TextStyle(
+                              color: const Color(0xFF3D3F4E),
+                              fontSize: 14,
+                              fontStyle: FontStyle.normal,
+                              fontWeight: FontWeight.normal)),
+                    ),
+                  ),
                 ],
             onSelected: (value) {
               if (value == 1) {

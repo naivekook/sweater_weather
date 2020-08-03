@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
+import 'package:sweaterweather/app_starter.dart';
 import 'package:sweaterweather/data/repository/city_repository.dart';
 import 'package:sweaterweather/data/repository/weather_repository.dart';
-import 'package:sweaterweather/main.dart';
 import 'package:sweaterweather/models/city.dart';
 import 'package:sweaterweather/models/weather.dart';
 import 'package:sweaterweather/ui/screens/home/location_list_item.dart';
