@@ -18,21 +18,21 @@ class WeatherRepository {
 
   Future<Weather> getWeatherForCity(City city) async {
     final result = await _weatherApi.getWeatherByCityId(city.id);
-    final weather = _mapper.mapWeatherResponse(result);
+    final weather = await _mapper.mapWeatherResponse(result);
     await _saveWeather(weather);
     return weather;
   }
 
   Future<Weather> getWeatherForLocation(double lat, double lon) async {
     final result = await _weatherApi.getWeatherByLocation(lat, lon);
-    final weather = _mapper.mapWeatherResponse(result);
+    final weather = await _mapper.mapWeatherResponse(result);
     await _saveWeather(weather);
     return weather;
   }
 
   Future<void> _saveWeather(Weather weather) async {
     final List<Weather> weatherList = await _weatherStorage.getWeather();
-    weatherList.removeWhere((element) => element.cityId == weather.cityId);
+    weatherList.removeWhere((element) => element.city.id == weather.city.id);
     weatherList.add(weather);
     await _weatherStorage.saveWeather(weatherList);
   }

@@ -48,7 +48,7 @@ class _FAB extends StatelessWidget {
             side: BorderSide(color: const Color(0xFFDBDDF1), style: BorderStyle.solid, width: 1.0)),
         onPressed: () async {
           await Navigator.pushNamed(context, Router.ADD_CITY);
-          Provider.of<HomeController>(context, listen: false).getLocation();
+          Provider.of<HomeController>(context, listen: false).loadForecast();
         },
       ),
     );
@@ -101,7 +101,7 @@ class _CityListWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<HomeController>(
       builder: (BuildContext context, HomeController value, Widget child) {
-        final items = value.cities;
+        final items = value.weatherTiles;
         return NotificationListener<OverscrollIndicatorNotification>(
           onNotification: (OverscrollIndicatorNotification overscroll) {
             overscroll.disallowGlow();
@@ -117,7 +117,7 @@ class _CityListWidget extends StatelessWidget {
                     Navigator.pushNamed(context, Router.WEATHER, arguments: items[index].city),
               ),
             ),
-            onRefresh: () => Provider.of<HomeController>(context, listen: false).getLocation(),
+            onRefresh: () => Provider.of<HomeController>(context, listen: false).loadForecast(),
           ),
         );
       },
@@ -145,6 +145,20 @@ class _CityListItemWidget extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.all(24),
               child: Image(image: AssetImage(data.image)),
+            ),
+          ),
+          Visibility(
+            visible: data.isFromLocation,
+            child: Container(
+              alignment: Alignment.bottomRight,
+              child: Padding(
+                padding: const EdgeInsets.all(8),
+                child: Icon(
+                  Icons.near_me,
+                  size: 14.0,
+                  color: const Color(0x8f7F808C),
+                ),
+              ),
             ),
           ),
           Padding(
