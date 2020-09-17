@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:loader_overlay/loader_overlay.dart';
 import 'package:provider/provider.dart';
 import 'package:sweaterweather/router.dart';
 import 'package:sweaterweather/ui/screens/home/home_controller.dart';
 import 'package:sweaterweather/ui/screens/home/location_list_item.dart';
+import 'package:sweaterweather/ui/widgets/rainbow_spinner_widget.dart';
 
 class HomeScreen extends StatelessWidget {
   @override
@@ -12,44 +14,23 @@ class HomeScreen extends StatelessWidget {
       create: (context) => HomeController(),
       child: Scaffold(
         backgroundColor: Colors.white,
-        body: SafeArea(
-          child: Column(
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.only(left: 24, top: 8, right: 8, bottom: 8),
-                child: _TopBarWidget(),
-              ),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 24),
+        body: LoaderOverlay(
+          overlayWidget: Center(
+            child: RainbowSpinnerWidget(),
+          ),
+          overlayColor: Colors.white,
+          overlayOpacity: 0.9,
+          child: SafeArea(
+            child: Column(
+              children: <Widget>[
+                _TopBarWidget(),
+                Expanded(
                   child: _CityListWidget(),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
-        floatingActionButton: _FAB(),
-      ),
-    );
-  }
-}
-
-class _FAB extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(right: 20.0, bottom: 20.0),
-      child: FloatingActionButton(
-        backgroundColor: Colors.white,
-        foregroundColor: const Color(0xFF3D3F4E),
-        child: Icon(Icons.add),
-        elevation: 0.0,
-        shape: CircleBorder(
-            side: BorderSide(color: const Color(0xFFDBDDF1), style: BorderStyle.solid, width: 1.0)),
-        onPressed: () async {
-          await Navigator.pushNamed(context, Router.ADD_CITY);
-          Provider.of<HomeController>(context, listen: false).loadForecast();
-        },
       ),
     );
   }
@@ -58,40 +39,76 @@ class _FAB extends StatelessWidget {
 class _TopBarWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: <Widget>[
-        Expanded(
-          child: Text(
-            'My locations',
-            style: GoogleFonts.inter(
-                textStyle: TextStyle(
-                    color: const Color(0xFF3D3F4E),
-                    fontSize: 20,
-                    fontStyle: FontStyle.normal,
-                    fontWeight: FontWeight.w800)),
+    return Padding(
+      padding: const EdgeInsets.only(left: 24, top: 20, right: 8, bottom: 8),
+      child: Row(
+        children: <Widget>[
+          Expanded(
+            child: Text(
+              'My locations',
+              style: GoogleFonts.inter(
+                  textStyle: TextStyle(
+                      color: const Color(0xFF3D3F4E),
+                      fontSize: 20,
+                      fontStyle: FontStyle.normal,
+                      fontWeight: FontWeight.w800)),
+            ),
           ),
-        ),
-        PopupMenuButton(
-            itemBuilder: (context) => [
-                  PopupMenuItem(
-                    value: 1,
-                    child: Text(
-                      'About',
-                      style: GoogleFonts.inter(
-                          textStyle: TextStyle(
-                              color: const Color(0xFF3D3F4E),
-                              fontSize: 14,
-                              fontStyle: FontStyle.normal,
-                              fontWeight: FontWeight.normal)),
+          PopupMenuButton(
+              itemBuilder: (context) => [
+                    PopupMenuItem(
+                      value: 1,
+                      child: Text(
+                        'Find location',
+                        style: GoogleFonts.inter(
+                            textStyle: TextStyle(
+                                color: const Color(0xFF3D3F4E),
+                                fontSize: 14,
+                                fontStyle: FontStyle.normal,
+                                fontWeight: FontWeight.normal)),
+                      ),
                     ),
-                  ),
-                ],
-            onSelected: (value) {
-              if (value == 1) {
-                Navigator.pushNamed(context, Router.ABOUT);
-              }
-            }),
-      ],
+                    PopupMenuItem(
+                      value: 2,
+                      child: Text(
+                        'Refresh',
+                        style: GoogleFonts.inter(
+                            textStyle: TextStyle(
+                                color: const Color(0xFF3D3F4E),
+                                fontSize: 14,
+                                fontStyle: FontStyle.normal,
+                                fontWeight: FontWeight.normal)),
+                      ),
+                    ),
+                    PopupMenuItem(
+                      value: 3,
+                      child: Text(
+                        'About',
+                        style: GoogleFonts.inter(
+                            textStyle: TextStyle(
+                                color: const Color(0xFF3D3F4E),
+                                fontSize: 14,
+                                fontStyle: FontStyle.normal,
+                                fontWeight: FontWeight.normal)),
+                      ),
+                    ),
+                  ],
+              onSelected: (value) async {
+                switch (value) {
+                  case 1:
+                    await Navigator.pushNamed(context, Router.ADD_CITY);
+                    Provider.of<HomeController>(context, listen: false).refresh();
+                    break;
+                  case 2:
+                    Provider.of<HomeController>(context, listen: false).refresh();
+                    break;
+                  case 3:
+                    Navigator.pushNamed(context, Router.ABOUT);
+                    break;
+                }
+              }),
+        ],
+      ),
     );
   }
 }
@@ -101,24 +118,21 @@ class _CityListWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<HomeController>(
       builder: (BuildContext context, HomeController value, Widget child) {
+        if (value.inProgress) {
+          context.showLoaderOverlay();
+        } else {
+          context.hideLoaderOverlay();
+        }
         final items = value.weatherTiles;
-        return NotificationListener<OverscrollIndicatorNotification>(
-          onNotification: (OverscrollIndicatorNotification overscroll) {
-            overscroll.disallowGlow();
-            return false;
-          },
-          child: RefreshIndicator(
-            child: ListView.separated(
-              separatorBuilder: (context, index) => Divider(color: Colors.white),
-              itemCount: items.length,
-              itemBuilder: (context, index) => GestureDetector(
-                child: _CityListItemWidget(items[index]),
-                onTap: () =>
-                    Navigator.pushNamed(context, Router.WEATHER, arguments: items[index].city),
-              ),
-            ),
-            onRefresh: () => Provider.of<HomeController>(context, listen: false).loadForecast(),
-          ),
+        return ListView.separated(
+          padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 24),
+          separatorBuilder: (context, index) => Divider(color: Colors.white),
+          itemCount: items.length,
+          itemBuilder: (context, index) => GestureDetector(
+              child: _CityListItemWidget(items[index]),
+              onTap: () {
+                Navigator.pushNamed(context, Router.WEATHER, arguments: items[index].city);
+              }),
         );
       },
     );
@@ -175,35 +189,40 @@ class _CityListItemWidget extends StatelessWidget {
                           fontWeight: FontWeight.w800)),
                 ),
                 SizedBox(width: 15),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Text(
-                      data.city.name,
-                      style: GoogleFonts.inter(
-                          textStyle: TextStyle(
-                              color: const Color(0xFF3D3F4E),
-                              fontSize: 20,
-                              fontStyle: FontStyle.normal,
-                              fontWeight: FontWeight.w800)),
-                    ),
-                    SizedBox(height: 5),
-                    SizedBox(
-                      width: 150,
-                      child: Text(
-                        data.weatherDescription,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Text(
+                        data.city.name,
+                        maxLines: 1,
+                        softWrap: false,
+                        overflow: TextOverflow.fade,
                         style: GoogleFonts.inter(
                             textStyle: TextStyle(
-                                color: const Color(0xFF7F808C),
-                                fontSize: 14,
+                                color: const Color(0xFF3D3F4E),
+                                fontSize: 20,
                                 fontStyle: FontStyle.normal,
-                                fontWeight: FontWeight.normal)),
+                                fontWeight: FontWeight.w800)),
                       ),
-                    ),
-                  ],
+                      SizedBox(height: 5),
+                      SizedBox(
+                        width: 150,
+                        child: Text(
+                          data.weatherDescription,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: GoogleFonts.inter(
+                              textStyle: TextStyle(
+                                  color: const Color(0xFF7F808C),
+                                  fontSize: 14,
+                                  fontStyle: FontStyle.normal,
+                                  fontWeight: FontWeight.normal)),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),

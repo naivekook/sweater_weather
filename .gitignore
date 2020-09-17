@@ -12,6 +12,7 @@
 android/app/google-services.json
 android/key.properties
 *.jks
+.gradle
 
 # IntelliJ related
 *.iml

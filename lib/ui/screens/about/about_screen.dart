@@ -13,7 +13,7 @@ class AboutScreen extends StatelessWidget {
         child: Column(
           children: <Widget>[
             Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.only(left: 8.0, top: 20, right: 8, bottom: 8),
               child: _TopBarWidget(),
             ),
             RichText(

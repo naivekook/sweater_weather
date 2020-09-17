@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:loader_overlay/loader_overlay.dart';
 import 'package:provider/provider.dart';
 import 'package:sweaterweather/models/city.dart';
 import 'package:sweaterweather/ui/screens/weather/weather_controller.dart';
+import 'package:sweaterweather/ui/widgets/rainbow_spinner_widget.dart';
 import 'package:sweaterweather/ui/widgets/single_property_widget.dart';
 import 'package:sweaterweather/utils/weather_icon_utils.dart';
 
@@ -18,22 +20,29 @@ class WeatherScreen extends StatelessWidget {
       create: (context) => WeatherController(city),
       child: Scaffold(
         backgroundColor: const Color(0xFFDDEEF3),
-        body: SafeArea(
-          child: Column(
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.all(8),
-                child: _TopBarWidget(),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 58, top: 8, right: 34, bottom: 8),
-                child: _WeatherWidget(),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 58),
-                child: _WeatherAdditionalProperties(),
-              ),
-            ],
+        body: LoaderOverlay(
+          overlayWidget: Center(
+            child: RainbowSpinnerWidget(),
+          ),
+          overlayColor: Colors.white,
+          overlayOpacity: 0.9,
+          child: SafeArea(
+            child: Column(
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.only(left: 8, top: 20, bottom: 8, right: 34),
+                  child: _TopBarWidget(),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 58, top: 8, right: 34, bottom: 8),
+                  child: _WeatherWidget(),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 58),
+                  child: _WeatherAdditionalProperties(),
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -45,51 +54,62 @@ class _TopBarWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final info = Provider.of<WeatherController>(context, listen: false).getHeaderInfo();
-    return Row(
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        IconButton(
-          icon: Icon(
-            Icons.arrow_back_ios,
-            size: 20,
-            color: const Color(0xFF7F808C),
-          ),
-          onPressed: () => Navigator.pop(context),
-        ),
-        Column(
+        Row(
+          mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Text(
-              info.title,
-              style: GoogleFonts.inter(
-                  textStyle: TextStyle(
-                      color: const Color(0xFF3D3F4E),
-                      fontSize: 36,
-                      fontStyle: FontStyle.normal,
-                      fontWeight: FontWeight.w800)),
+            IconButton(
+              icon: Icon(
+                Icons.arrow_back_ios,
+                size: 20,
+                color: const Color(0xFF7F808C),
+              ),
+              onPressed: () => Navigator.pop(context),
             ),
-            SizedBox(height: 8),
-            Text(
-              info.date,
-              style: GoogleFonts.inter(
-                  textStyle: TextStyle(
-                      color: const Color(0xFF7F808C),
-                      fontSize: 14,
-                      fontStyle: FontStyle.normal,
-                      fontWeight: FontWeight.normal)),
-            ),
-            SizedBox(height: 6),
-            Text(
-              info.dayOfWeek,
-              style: GoogleFonts.inter(
-                  textStyle: TextStyle(
-                      color: const Color(0xFF7F808C),
-                      fontSize: 14,
-                      fontStyle: FontStyle.normal,
-                      fontWeight: FontWeight.normal)),
+            Expanded(
+              child: Text(
+                info.title,
+                maxLines: 1,
+                softWrap: false,
+                overflow: TextOverflow.fade,
+                style: GoogleFonts.inter(
+                    textStyle: TextStyle(
+                        color: const Color(0xFF3D3F4E),
+                        fontSize: 32,
+                        fontStyle: FontStyle.normal,
+                        fontWeight: FontWeight.w800)),
+              ),
             ),
           ],
-        )
+        ),
+        Padding(
+          padding: const EdgeInsets.only(left: 50),
+          child: Text(
+            info.date,
+            style: GoogleFonts.inter(
+                textStyle: TextStyle(
+                    color: const Color(0xFF7F808C),
+                    fontSize: 14,
+                    fontStyle: FontStyle.normal,
+                    fontWeight: FontWeight.normal)),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(top: 6, left: 50),
+          child: Text(
+            info.dayOfWeek,
+            style: GoogleFonts.inter(
+                textStyle: TextStyle(
+                    color: const Color(0xFF7F808C),
+                    fontSize: 14,
+                    fontStyle: FontStyle.normal,
+                    fontWeight: FontWeight.normal)),
+          ),
+        ),
       ],
     );
   }
@@ -99,6 +119,11 @@ class _WeatherWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer<WeatherController>(builder: (context, value, child) {
+      if (value.inProgress) {
+        context.showLoaderOverlay();
+      } else {
+        context.hideLoaderOverlay();
+      }
       if (value.weather == null) {
         return Container();
       } else {
@@ -106,13 +131,16 @@ class _WeatherWidget extends StatelessWidget {
           children: <Widget>[
             Container(
               alignment: Alignment.topRight,
-              child:
-                  Image(image: AssetImage(WeatherIconUtils.codeToIllustration(value.weather.icon))),
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: 20),
+                child: Image(
+                    image: AssetImage(WeatherIconUtils.codeToIllustration(value.weather.icon))),
+              ),
             ),
-            Align(
+            Container(
               alignment: Alignment.bottomLeft,
               child: Padding(
-                padding: const EdgeInsets.only(top: 24),
+                padding: const EdgeInsets.only(top: 20),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: <Widget>[
@@ -144,7 +172,7 @@ class _WeatherWidget extends StatelessWidget {
                         ),
                         SizedBox(height: 2),
                         Padding(
-                          padding: const EdgeInsets.only(left:2),
+                          padding: const EdgeInsets.only(left: 2),
                           child: Text(
                             'Feels like ${value.weather.tempFeelsLike.toInt()}°C',
                             style: GoogleFonts.inter(

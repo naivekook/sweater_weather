@@ -6,6 +6,7 @@ import 'package:sweaterweather/app_starter.dart';
 import 'package:sweaterweather/data/repository/city_repository.dart';
 import 'package:sweaterweather/data/repository/weather_repository.dart';
 import 'package:sweaterweather/models/city.dart';
+import 'package:sweaterweather/models/weather.dart';
 import 'package:sweaterweather/ui/screens/home/location_list_item.dart';
 import 'package:sweaterweather/utils/weather_icon_utils.dart';
 
@@ -14,32 +15,59 @@ class HomeController with ChangeNotifier {
   final WeatherRepository _weatherRepository = getIt.get();
 
   List<LocationListItem> weatherTiles = [];
+  bool inProgress = false;
 
   HomeController() {
-    loadForecast();
+    refresh();
   }
 
-  Future<void> loadForecast() async {
-    weatherTiles.clear();
+  void refresh() async {
+    if (inProgress) {
+      return;
+    }
+    _showLoading();
+    await _loadForecast();
+    _hideLoading();
+  }
 
+  Future<void> _loadForecast() async {
+    List<LocationListItem> tileSet = [];
     try {
       Position position =
           await Geolocator().getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
-      final weather =
+      Weather weather =
           await _weatherRepository.getWeatherForLocation(position.latitude, position.longitude);
-      weatherTiles.add(LocationListItem(weather.city, weather.description, weather.temp.toInt(),
-          WeatherIconUtils.codeToIllustration(weather.icon), true));
+      tileSet.add(mapWeatherToTile(weather, true));
     } on PlatformException {} catch (ex, st) {
       Crashlytics.instance.recordError(ex, st);
     }
 
     final savedCities = await _cityRepository.getCities();
     for (City city in savedCities) {
-      final weather = await _weatherRepository.getWeatherForCity(city);
-      weatherTiles.add(LocationListItem(city, weather.description, weather.temp.toInt(),
-          WeatherIconUtils.codeToIllustration(weather.icon), false));
+      Weather weather = await _weatherRepository.getWeatherForCity(city);
+      tileSet.add(mapWeatherToTile(weather, false));
     }
+    _updateTiles(tileSet);
+  }
 
+  void _showLoading() {
+    inProgress = true;
     notifyListeners();
+  }
+
+  void _hideLoading() {
+    inProgress = false;
+    notifyListeners();
+  }
+
+  void _updateTiles(List<LocationListItem> tiles) {
+    weatherTiles.clear();
+    weatherTiles.addAll(tiles);
+    notifyListeners();
+  }
+
+  LocationListItem mapWeatherToTile(Weather weather, bool currentLocation) {
+    return LocationListItem(weather.city, weather.description, weather.temp.toInt(),
+        WeatherIconUtils.codeToIllustration(weather.icon), currentLocation);
   }
 }

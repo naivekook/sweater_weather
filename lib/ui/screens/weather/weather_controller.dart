@@ -12,11 +12,15 @@ class WeatherController with ChangeNotifier {
   final WeatherRepository _weatherRepository = getIt.get();
 
   Weather weather;
+  bool inProgress;
   bool isError = false;
   String errorMessage;
 
   WeatherController(this._city) {
+    inProgress = true;
+    notifyListeners();
     _weatherRepository.getWeatherForCity(_city).then((value) {
+      inProgress = false;
       weather = value;
       notifyListeners();
     });
