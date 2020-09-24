@@ -1,3 +1,3 @@
 # sweater weather
 
-Weather application.
+Weather application written on Flutter.
