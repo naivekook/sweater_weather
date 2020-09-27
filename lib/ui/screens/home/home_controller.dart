@@ -18,16 +18,20 @@ class HomeController with ChangeNotifier {
   bool inProgress = false;
 
   HomeController() {
-    refresh();
+    refresh(true);
   }
 
-  void refresh() async {
+  void refresh(bool force) async {
     if (inProgress) {
       return;
     }
-    _showLoading();
-    await _loadForecast();
-    _hideLoading();
+
+    bool locationListChanged = await _locationListChanged();
+    if (force || locationListChanged) {
+      _showLoading();
+      await _loadForecast();
+      _hideLoading();
+    }
   }
 
   Future<void> _loadForecast() async {
@@ -37,7 +41,7 @@ class HomeController with ChangeNotifier {
           await Geolocator().getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
       Weather weather =
           await _weatherRepository.getWeatherForLocation(position.latitude, position.longitude);
-      tileSet.add(mapWeatherToTile(weather, true));
+      tileSet.add(_mapWeatherToTile(weather, true));
     } on PlatformException {} catch (ex, st) {
       Crashlytics.instance.recordError(ex, st);
     }
@@ -45,7 +49,7 @@ class HomeController with ChangeNotifier {
     final savedCities = await _cityRepository.getCities();
     for (City city in savedCities) {
       Weather weather = await _weatherRepository.getWeatherForCity(city);
-      tileSet.add(mapWeatherToTile(weather, false));
+      tileSet.add(_mapWeatherToTile(weather, false));
     }
     _updateTiles(tileSet);
   }
@@ -66,8 +70,15 @@ class HomeController with ChangeNotifier {
     notifyListeners();
   }
 
-  LocationListItem mapWeatherToTile(Weather weather, bool currentLocation) {
+  LocationListItem _mapWeatherToTile(Weather weather, bool currentLocation) {
     return LocationListItem(weather.city, weather.description, weather.temp.toInt(),
         WeatherIconUtils.codeToIllustration(weather.icon), currentLocation);
+  }
+
+  Future<bool> _locationListChanged() async {
+    List<int> savedCities = (await _cityRepository.getCities()).map((e) => e.id).toList();
+    List<int> currentCities = weatherTiles.map((e) => e.city.id).toList();
+    savedCities.removeWhere((e1) => currentCities.any((e2) => e1 == e2));
+    return savedCities.length != 0;
   }
 }

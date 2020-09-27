@@ -97,10 +97,10 @@ class _TopBarWidget extends StatelessWidget {
                 switch (value) {
                   case 1:
                     await Navigator.pushNamed(context, Router.ADD_CITY);
-                    Provider.of<HomeController>(context, listen: false).refresh();
+                    Provider.of<HomeController>(context, listen: false).refresh(false);
                     break;
                   case 2:
-                    Provider.of<HomeController>(context, listen: false).refresh();
+                    Provider.of<HomeController>(context, listen: false).refresh(true);
                     break;
                   case 3:
                     Navigator.pushNamed(context, Router.ABOUT);
