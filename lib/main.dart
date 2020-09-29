@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:sweaterweather/app_starter.dart';
 import 'package:sweaterweather/router.dart';
+import 'package:sweaterweather/ui/widgets/weather_icon_loader.dart';
 
 void main() {
   Crashlytics.instance.enableInDevMode = !kReleaseMode;
@@ -44,7 +45,15 @@ class SplashApp extends StatelessWidget {
         } else {
           return MaterialApp(
             theme: ThemeData.light(),
-            home: Scaffold(backgroundColor: Colors.white),
+            home: Scaffold(
+              backgroundColor: const Color(0xFFBCE8F4),
+              body: SafeArea(
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 24),
+                  child: WeatherIconLoader(),
+                ),
+              ),
+            ),
           );
         }
       },
