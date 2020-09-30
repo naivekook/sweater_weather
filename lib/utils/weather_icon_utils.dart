@@ -40,33 +40,39 @@ class WeatherIconUtils {
     String name;
     switch (iconCode.substring(0, 2)) {
       case '01':
-        name = 'clear_sky_day';
+        name = 'clear_sky';
         break;
       case '02':
-        name = 'few_clouds_day';
+        name = 'few_clouds';
         break;
       case '03':
-        name = 'scattered_clouds_day';
+        name = 'scattered_clouds';
         break;
       case '04':
-        name = 'broken_clouds_day';
+        name = 'broken_clouds';
         break;
       case '09':
-        name = 'shower_rain_day';
+        name = 'shower_rain';
         break;
       case '10':
-        name = 'rain_day';
+        name = 'rain';
         break;
       case '11':
-        name = 'thunderstorm_day';
+        name = 'thunderstorm';
         break;
       case '13':
-        name = 'snow_day';
+        name = 'snow';
         break;
       case '50':
-        name = 'mist_day';
+        name = 'mist';
         break;
     }
-    return name != null ? '$_illustrationsFolder/$name.png' : null;
+    String modification;
+    if (iconCode.substring(2, 3) == 'n') {
+      modification = 'night';
+    } else {
+      modification = 'day';
+    }
+    return name != null ? '$_illustrationsFolder/${name}_$modification.png' : null;
   }
 }
