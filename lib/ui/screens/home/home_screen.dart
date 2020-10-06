@@ -167,11 +167,7 @@ class _CityListItemWidget extends StatelessWidget {
               alignment: Alignment.bottomRight,
               child: Padding(
                 padding: const EdgeInsets.all(8),
-                child: Icon(
-                  Icons.near_me_rounded,
-                  size: 14.0,
-                  color: const Color(0x8f7F808C),
-                ),
+                child: Image.asset("assets/illustrations/ic_location.png"),
               ),
             ),
           ),
