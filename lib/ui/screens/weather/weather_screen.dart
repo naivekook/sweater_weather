@@ -133,8 +133,7 @@ class _WeatherWidget extends StatelessWidget {
               alignment: Alignment.topRight,
               child: Padding(
                 padding: const EdgeInsets.only(bottom: 20),
-                child: Image(
-                    image: AssetImage(WeatherIconUtils.codeToIllustration(value.weather.icon))),
+                child: Image.asset(WeatherIconUtils.codeToIllustration(value.weather.icon)),
               ),
             ),
             Container(
@@ -153,37 +152,43 @@ class _WeatherWidget extends StatelessWidget {
                               fontStyle: FontStyle.normal,
                               fontWeight: FontWeight.w800)),
                     ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        SvgPicture.asset('assets/images/donut.svg', width: 40, height: 40),
-                        SizedBox(height: 8),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 2),
-                          child: Text(
-                            value.weather.description,
-                            style: GoogleFonts.inter(
-                                textStyle: TextStyle(
-                                    color: const Color(0xFF3D3F4E),
-                                    fontSize: 14,
-                                    fontStyle: FontStyle.normal,
-                                    fontWeight: FontWeight.normal)),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          SvgPicture.asset('assets/images/donut.svg', width: 40, height: 40),
+                          SizedBox(height: 8),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 2),
+                            child: Text(
+                              value.weather.description,
+                              maxLines: 1,
+                              softWrap: false,
+                              overflow: TextOverflow.fade,
+                              style: GoogleFonts.inter(
+                                  textStyle: TextStyle(
+                                      color: const Color(0xFF3D3F4E),
+                                      fontSize: 14,
+                                      fontStyle: FontStyle.normal,
+                                      fontWeight: FontWeight.normal)),
+                            ),
                           ),
-                        ),
-                        SizedBox(height: 2),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 2),
-                          child: Text(
-                            'Feels like ${value.weather.tempFeelsLike.toInt()}°C',
-                            style: GoogleFonts.inter(
-                                textStyle: TextStyle(
-                                    color: const Color(0xFF3D3F4E),
-                                    fontSize: 14,
-                                    fontStyle: FontStyle.normal,
-                                    fontWeight: FontWeight.normal)),
+                          SizedBox(height: 2),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 2),
+                            child: Text(
+                              'Feels like ${value.weather.tempFeelsLike.toInt()}°C',
+                              style: GoogleFonts.inter(
+                                  textStyle: TextStyle(
+                                      color: const Color(0xFF3D3F4E),
+                                      fontSize: 14,
+                                      fontStyle: FontStyle.normal,
+                                      fontWeight: FontWeight.normal)),
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     )
                   ],
                 ),
