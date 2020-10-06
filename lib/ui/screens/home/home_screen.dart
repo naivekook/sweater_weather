@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:provider/provider.dart';
-import 'package:sweaterweather/router.dart';
+import 'package:sweaterweather/app_router.dart';
 import 'package:sweaterweather/ui/screens/home/home_controller.dart';
 import 'package:sweaterweather/ui/screens/home/location_list_item.dart';
 import 'package:sweaterweather/ui/widgets/rainbow_spinner_widget.dart';
@@ -96,14 +96,14 @@ class _TopBarWidget extends StatelessWidget {
               onSelected: (value) async {
                 switch (value) {
                   case 1:
-                    await Navigator.pushNamed(context, Router.ADD_CITY);
+                    await Navigator.pushNamed(context, AppRouter.ADD_CITY);
                     Provider.of<HomeController>(context, listen: false).refresh(false);
                     break;
                   case 2:
                     Provider.of<HomeController>(context, listen: false).refresh(true);
                     break;
                   case 3:
-                    Navigator.pushNamed(context, Router.ABOUT);
+                    Navigator.pushNamed(context, AppRouter.ABOUT);
                     break;
                 }
               }),
@@ -131,7 +131,7 @@ class _CityListWidget extends StatelessWidget {
           itemBuilder: (context, index) => GestureDetector(
               child: _CityListItemWidget(items[index]),
               onTap: () {
-                Navigator.pushNamed(context, Router.WEATHER, arguments: items[index].city);
+                Navigator.pushNamed(context, AppRouter.WEATHER, arguments: items[index].city);
               }),
         );
       },
@@ -168,7 +168,7 @@ class _CityListItemWidget extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.all(8),
                 child: Icon(
-                  Icons.near_me,
+                  Icons.near_me_rounded,
                   size: 14.0,
                   color: const Color(0x8f7F808C),
                 ),

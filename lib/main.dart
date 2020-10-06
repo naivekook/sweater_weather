@@ -5,7 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:sweaterweather/app_starter.dart';
-import 'package:sweaterweather/router.dart';
+import 'package:sweaterweather/app_router.dart';
 import 'package:sweaterweather/ui/widgets/weather_icon_loader.dart';
 
 void main() {
@@ -26,8 +26,8 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData.light(),
-      onGenerateRoute: Router.generateRoute,
-      initialRoute: Router.HOME,
+      onGenerateRoute: AppRouter.generateRoute,
+      initialRoute: AppRouter.HOME,
     );
   }
 }
