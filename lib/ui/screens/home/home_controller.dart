@@ -8,11 +8,13 @@ import 'package:sweaterweather/data/repository/weather_repository.dart';
 import 'package:sweaterweather/models/city.dart';
 import 'package:sweaterweather/models/weather.dart';
 import 'package:sweaterweather/ui/screens/home/location_list_item.dart';
+import 'package:sweaterweather/utils/day_night_palette.dart';
 import 'package:sweaterweather/utils/weather_icon_utils.dart';
 
 class HomeController with ChangeNotifier {
   final CityRepository _cityRepository = getIt.get();
   final WeatherRepository _weatherRepository = getIt.get();
+  final DayNightPalette _dayNightPalette = getIt.get();
 
   List<LocationListItem> weatherTiles = [];
   bool inProgress = false;
@@ -71,8 +73,13 @@ class HomeController with ChangeNotifier {
   }
 
   LocationListItem _mapWeatherToTile(Weather weather, bool currentLocation) {
-    return LocationListItem(weather.city, weather.description, weather.temp.toInt(),
-        WeatherIconUtils.codeToIllustration(weather.icon), currentLocation);
+    return LocationListItem(
+        weather.city,
+        weather.description,
+        weather.temp.toInt(),
+        WeatherIconUtils.codeToIllustration(weather.icon),
+        currentLocation,
+        _dayNightPalette.getPalette(weather));
   }
 
   Future<bool> _locationListChanged() async {

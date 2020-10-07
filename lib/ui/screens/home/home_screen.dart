@@ -149,7 +149,7 @@ class _CityListItemWidget extends StatelessWidget {
     return Container(
       height: 94,
       decoration: BoxDecoration(
-        color: const Color(0xFFDDEEF3),
+        color: Color(data.palette.backgroundColor),
         borderRadius: BorderRadius.all(const Radius.circular(8)),
       ),
       child: Stack(
@@ -179,7 +179,7 @@ class _CityListItemWidget extends StatelessWidget {
                   '${data.temp}°',
                   style: GoogleFonts.inter(
                       textStyle: TextStyle(
-                          color: const Color(0xFF3D3F4E),
+                          color: Color(data.palette.primaryFontColor),
                           fontSize: 52,
                           fontStyle: FontStyle.normal,
                           fontWeight: FontWeight.w800)),
@@ -197,7 +197,7 @@ class _CityListItemWidget extends StatelessWidget {
                         overflow: TextOverflow.fade,
                         style: GoogleFonts.inter(
                             textStyle: TextStyle(
-                                color: const Color(0xFF3D3F4E),
+                                color: Color(data.palette.primaryFontColor),
                                 fontSize: 20,
                                 fontStyle: FontStyle.normal,
                                 fontWeight: FontWeight.w800)),
@@ -211,7 +211,7 @@ class _CityListItemWidget extends StatelessWidget {
                           overflow: TextOverflow.ellipsis,
                           style: GoogleFonts.inter(
                               textStyle: TextStyle(
-                                  color: const Color(0xFF7F808C),
+                                  color: Color(data.palette.secondaryFontColor),
                                   fontSize: 14,
                                   fontStyle: FontStyle.normal,
                                   fontWeight: FontWeight.normal)),

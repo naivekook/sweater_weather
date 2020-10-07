@@ -3,15 +3,19 @@ import 'package:intl/intl.dart';
 import 'package:sweaterweather/app_starter.dart';
 import 'package:sweaterweather/data/repository/weather_repository.dart';
 import 'package:sweaterweather/models/city.dart';
+import 'package:sweaterweather/models/palette.dart';
 import 'package:sweaterweather/models/weather.dart';
 import 'package:sweaterweather/ui/screens/weather/weather_grid_item.dart';
 import 'package:sweaterweather/ui/screens/weather/weather_header_info.dart';
+import 'package:sweaterweather/utils/day_night_palette.dart';
 
 class WeatherController with ChangeNotifier {
   final City _city;
   final WeatherRepository _weatherRepository = getIt.get();
+  final DayNightPalette _dayNightPalette = getIt.get();
 
   Weather weather;
+  Palette palette;
   bool inProgress;
   bool isError = false;
   String errorMessage;
@@ -22,6 +26,7 @@ class WeatherController with ChangeNotifier {
     _weatherRepository.getWeatherForCity(_city).then((value) {
       inProgress = false;
       weather = value;
+      palette = _dayNightPalette.getPalette(weather);
       notifyListeners();
     });
   }
