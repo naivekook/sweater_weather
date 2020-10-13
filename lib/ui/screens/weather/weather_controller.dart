@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:sweaterweather/app_starter.dart';
 import 'package:sweaterweather/data/repository/weather_repository.dart';
 import 'package:sweaterweather/models/city.dart';
+import 'package:sweaterweather/models/city_with_palette.dart';
 import 'package:sweaterweather/models/palette.dart';
 import 'package:sweaterweather/models/weather.dart';
 import 'package:sweaterweather/ui/screens/weather/weather_grid_item.dart';
@@ -10,18 +11,22 @@ import 'package:sweaterweather/ui/screens/weather/weather_header_info.dart';
 import 'package:sweaterweather/utils/day_night_palette.dart';
 
 class WeatherController with ChangeNotifier {
-  final City _city;
+  City _city;
   final WeatherRepository _weatherRepository = getIt.get();
   final DayNightPalette _dayNightPalette = getIt.get();
 
+  WeatherHeaderInfo headerInfo;
   Weather weather;
   Palette palette;
   bool inProgress;
   bool isError = false;
   String errorMessage;
 
-  WeatherController(this._city) {
+  WeatherController(CityWithPalette cityWithPalette) {
+    _city = cityWithPalette.city;
+    palette = cityWithPalette.palette;
     inProgress = true;
+    headerInfo = _getHeaderInfo();
     notifyListeners();
     _weatherRepository.getWeatherForCity(_city).then((value) {
       inProgress = false;
@@ -31,7 +36,7 @@ class WeatherController with ChangeNotifier {
     });
   }
 
-  WeatherHeaderInfo getHeaderInfo() {
+  WeatherHeaderInfo _getHeaderInfo() {
     DateTime date = DateTime.now();
     return WeatherHeaderInfo(
         _city.name,

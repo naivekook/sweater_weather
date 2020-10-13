@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:sweaterweather/models/city.dart';
+import 'package:sweaterweather/models/city_with_palette.dart';
 import 'package:sweaterweather/ui/screens/about/about_screen.dart';
 import 'package:sweaterweather/ui/screens/addcity/add_city_screen.dart';
 import 'package:sweaterweather/ui/screens/home/home_screen.dart';
@@ -20,8 +20,8 @@ class AppRouter {
       case ADD_CITY:
         return CupertinoPageRoute(builder: (context) => AddCityScreen());
       case WEATHER:
-        final city = settings.arguments as City;
-        return CupertinoPageRoute(builder: (context) => WeatherScreen(city));
+        final cityWithPalette = settings.arguments as CityWithPalette;
+        return CupertinoPageRoute(builder: (context) => WeatherScreen(cityWithPalette));
       case ABOUT:
         return CupertinoPageRoute(builder: (context) => AboutScreen());
       default:

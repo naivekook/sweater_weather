@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:provider/provider.dart';
 import 'package:sweaterweather/app_router.dart';
+import 'package:sweaterweather/models/city_with_palette.dart';
 import 'package:sweaterweather/ui/screens/home/home_controller.dart';
 import 'package:sweaterweather/ui/screens/home/location_list_item.dart';
 import 'package:sweaterweather/ui/widgets/rainbow_spinner_widget.dart';
@@ -131,7 +132,8 @@ class _CityListWidget extends StatelessWidget {
           itemBuilder: (context, index) => GestureDetector(
               child: _CityListItemWidget(items[index]),
               onTap: () {
-                Navigator.pushNamed(context, AppRouter.WEATHER, arguments: items[index].city);
+                final arguments = CityWithPalette(items[index].city, items[index].palette);
+                Navigator.pushNamed(context, AppRouter.WEATHER, arguments: arguments);
               }),
         );
       },

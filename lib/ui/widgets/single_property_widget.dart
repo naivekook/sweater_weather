@@ -4,8 +4,10 @@ import 'package:google_fonts/google_fonts.dart';
 class SinglePropertyWidget extends StatelessWidget {
   final String title;
   final String subtitle;
+  final int titleColor;
+  final int subtitleColor;
 
-  SinglePropertyWidget({this.title, this.subtitle});
+  SinglePropertyWidget(this.title, this.subtitle, this.titleColor, this.subtitleColor);
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +18,7 @@ class SinglePropertyWidget extends StatelessWidget {
           title,
           style: GoogleFonts.inter(
               textStyle: TextStyle(
-                  color: const Color(0xFF7F808C),
+                  color: Color(titleColor),
                   fontSize: 10,
                   fontStyle: FontStyle.normal,
                   fontWeight: FontWeight.normal)),
@@ -26,7 +28,7 @@ class SinglePropertyWidget extends StatelessWidget {
           subtitle,
           style: GoogleFonts.inter(
               textStyle: TextStyle(
-                  color: const Color(0xFF3D3F4E),
+                  color: Color(subtitleColor),
                   fontSize: 14,
                   fontStyle: FontStyle.normal,
                   fontWeight: FontWeight.w800)),
