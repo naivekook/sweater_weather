@@ -39,13 +39,12 @@ class HomeController with ChangeNotifier {
   Future<void> _loadForecast() async {
     List<LocationListItem> tileSet = [];
     try {
-      Position position =
-          await Geolocator().getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+      Position position = await getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
       Weather weather =
           await _weatherRepository.getWeatherForLocation(position.latitude, position.longitude);
       tileSet.add(_mapWeatherToTile(weather, true));
     } on PlatformException {} catch (ex, st) {
-      Crashlytics.instance.recordError(ex, st);
+      FirebaseCrashlytics.instance.recordError(ex, st);
     }
 
     final savedCities = await _cityRepository.getCities();
