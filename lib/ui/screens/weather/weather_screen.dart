@@ -3,10 +3,12 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:provider/provider.dart';
+import 'package:sweaterweather/app_router.dart';
 import 'package:sweaterweather/models/city_with_palette.dart';
 import 'package:sweaterweather/ui/screens/weather/weather_controller.dart';
 import 'package:sweaterweather/ui/widgets/rainbow_spinner_widget.dart';
 import 'package:sweaterweather/ui/widgets/single_property_widget.dart';
+import 'package:sweaterweather/ui/widgets/toolbar_with_date_widget.dart';
 import 'package:sweaterweather/utils/weather_icon_utils.dart';
 
 class WeatherScreen extends StatelessWidget {
@@ -40,7 +42,7 @@ class _Screen extends StatelessWidget {
               children: <Widget>[
                 Padding(
                   padding: const EdgeInsets.only(left: 8, top: 20, bottom: 8, right: 34),
-                  child: _TopBarWidget(),
+                  child: ToolbarWithDate(controller.city, controller.palette),
                 ),
                 Expanded(
                   child: SingleChildScrollView(
@@ -62,7 +64,11 @@ class _Screen extends StatelessWidget {
                               borderRadius: BorderRadius.circular(8.0),
                               side: BorderSide(color: Color(controller.palette.secondaryFontColor)),
                             ),
-                            onPressed: () {},
+                            onPressed: () {
+                              final args = CityWithPalette(controller.city, controller.palette);
+                              Navigator.pushNamed(context, AppRouter.WEATHER_DETAILS,
+                                  arguments: args);
+                            },
                             child: Text(
                               "More details",
                               style: GoogleFonts.inter(
@@ -82,72 +88,6 @@ class _Screen extends StatelessWidget {
             ),
           ),
         ),
-      );
-    });
-  }
-}
-
-class _TopBarWidget extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Consumer<WeatherController>(builder: (context, controller, child) {
-      return Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              IconButton(
-                icon: Icon(
-                  Icons.arrow_back_ios,
-                  size: 20,
-                  color: Color(controller.palette.primaryFontColor),
-                ),
-                onPressed: () => Navigator.pop(context),
-              ),
-              Expanded(
-                child: Text(
-                  controller.headerInfo.title,
-                  maxLines: 1,
-                  softWrap: false,
-                  overflow: TextOverflow.fade,
-                  style: GoogleFonts.inter(
-                      textStyle: TextStyle(
-                          color: Color(controller.palette.primaryFontColor),
-                          fontSize: 32,
-                          fontStyle: FontStyle.normal,
-                          fontWeight: FontWeight.w800)),
-                ),
-              ),
-            ],
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: 50),
-            child: Text(
-              controller.headerInfo.date,
-              style: GoogleFonts.inter(
-                  textStyle: TextStyle(
-                      color: Color(controller.palette.secondaryFontColor),
-                      fontSize: 14,
-                      fontStyle: FontStyle.normal,
-                      fontWeight: FontWeight.normal)),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 6, left: 50),
-            child: Text(
-              controller.headerInfo.dayOfWeek,
-              style: GoogleFonts.inter(
-                  textStyle: TextStyle(
-                      color: Color(controller.palette.secondaryFontColor),
-                      fontSize: 14,
-                      fontStyle: FontStyle.normal,
-                      fontWeight: FontWeight.normal)),
-            ),
-          ),
-        ],
       );
     });
   }

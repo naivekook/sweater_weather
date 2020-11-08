@@ -7,15 +7,13 @@ import 'package:sweaterweather/models/city_with_palette.dart';
 import 'package:sweaterweather/models/palette.dart';
 import 'package:sweaterweather/models/weather.dart';
 import 'package:sweaterweather/ui/screens/weather/weather_grid_item.dart';
-import 'package:sweaterweather/ui/screens/weather/weather_header_info.dart';
 import 'package:sweaterweather/utils/day_night_palette.dart';
 
 class WeatherController with ChangeNotifier {
-  City _city;
   final WeatherRepository _weatherRepository = getIt.get();
   final DayNightPalette _dayNightPalette = getIt.get();
 
-  WeatherHeaderInfo headerInfo;
+  City city;
   Weather weather;
   Palette palette;
   bool inProgress;
@@ -23,25 +21,16 @@ class WeatherController with ChangeNotifier {
   String errorMessage;
 
   WeatherController(CityWithPalette cityWithPalette) {
-    _city = cityWithPalette.city;
+    city = cityWithPalette.city;
     palette = cityWithPalette.palette;
     inProgress = true;
-    headerInfo = _getHeaderInfo();
     notifyListeners();
-    _weatherRepository.getWeatherForCity(_city).then((value) {
+    _weatherRepository.getWeatherForCity(city).then((value) {
       inProgress = false;
       weather = value;
       palette = _dayNightPalette.getPalette(weather);
       notifyListeners();
     });
-  }
-
-  WeatherHeaderInfo _getHeaderInfo() {
-    DateTime date = DateTime.now();
-    return WeatherHeaderInfo(
-        _city.name,
-        '${DateFormat('MMMM').format(date)}, ${DateFormat('d').format(date)}',
-        DateFormat.EEEE().format(date));
   }
 
   List<WeatherGridItem> getGridItems() {
