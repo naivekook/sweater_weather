@@ -42,13 +42,41 @@ class _Screen extends StatelessWidget {
                   padding: const EdgeInsets.only(left: 8, top: 20, bottom: 8, right: 34),
                   child: _TopBarWidget(),
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 58, top: 8, right: 34, bottom: 8),
-                  child: _WeatherWidget(),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 58),
-                  child: _WeatherAdditionalProperties(),
+                Expanded(
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.vertical,
+                    child: Column(
+                      children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.only(left: 58, top: 8, right: 34, bottom: 8),
+                          child: _WeatherWidget(),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 58),
+                          child: _WeatherAdditionalProperties(),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 44),
+                          child: FlatButton(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8.0),
+                              side: BorderSide(color: Color(controller.palette.secondaryFontColor)),
+                            ),
+                            onPressed: () {},
+                            child: Text(
+                              "More details",
+                              style: GoogleFonts.inter(
+                                  textStyle: TextStyle(
+                                      color: Color(controller.palette.primaryFontColor),
+                                      fontSize: 14,
+                                      fontStyle: FontStyle.normal,
+                                      fontWeight: FontWeight.w800)),
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
                 ),
               ],
             ),
