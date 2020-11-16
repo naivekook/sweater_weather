@@ -8,6 +8,7 @@ import 'package:sweaterweather/ui/screens/weatherdetails/weather_details_day_ite
 import 'package:sweaterweather/ui/screens/weatherdetails/weather_details_hour_item.dart';
 import 'package:sweaterweather/ui/widgets/rainbow_spinner_widget.dart';
 import 'package:sweaterweather/ui/widgets/toolbar_with_date_widget.dart';
+import 'package:sweaterweather/ui/widgets/weather_additional_properties.dart';
 
 class WeatherDetailsScreen extends StatelessWidget {
   final CityWithPalette _cityWithPalette;
@@ -22,29 +23,6 @@ class WeatherDetailsScreen extends StatelessWidget {
     );
   }
 }
-
-List<WeatherDetailsHourItem> itemList = [
-  WeatherDetailsHourItem('11•', "assets/images/broken_clouds.svg", '12:00', 0xFF3D3F4E, 0xFF7F808C),
-  WeatherDetailsHourItem('11•', "assets/images/few_clouds.svg", '12:00', 0xFF3D3F4E, 0xFF7F808C),
-  WeatherDetailsHourItem('11•', "assets/images/rain.svg", '12:00', 0xFF3D3F4E, 0xFF7F808C),
-  WeatherDetailsHourItem('11•', "assets/images/mist.svg", '12:00', 0xFF3D3F4E, 0xFF7F808C),
-  WeatherDetailsHourItem('11•', "assets/images/snow.svg", '12:00', 0xFF3D3F4E, 0xFF7F808C),
-  WeatherDetailsHourItem('11•', "assets/images/clear_sky.svg", '12:00', 0xFF3D3F4E, 0xFF7F808C),
-  WeatherDetailsHourItem('11•', "assets/images/mist.svg", '12:00', 0xFF3D3F4E, 0xFF7F808C),
-  WeatherDetailsHourItem('11•', "assets/images/mist.svg", '12:00', 0xFF3D3F4E, 0xFF7F808C),
-  WeatherDetailsHourItem('11•', "assets/images/mist.svg", '12:00', 0xFF3D3F4E, 0xFF7F808C),
-  WeatherDetailsHourItem('11•', "assets/images/mist.svg", '12:00', 0xFF3D3F4E, 0xFF7F808C),
-  WeatherDetailsHourItem('11•', "assets/images/mist.svg", '12:00', 0xFF3D3F4E, 0xFF7F808C),
-];
-
-List<WeatherDetailsDayItem> itemList2 = [
-  WeatherDetailsDayItem('Thursday, 14', "assets/images/broken_clouds.svg", '11', '5', 0xFF3D3F4E),
-  WeatherDetailsDayItem('Thursday, 14', "assets/images/few_clouds.svg", '11', '5', 0xFF3D3F4E),
-  WeatherDetailsDayItem('Saturday, 16', "assets/images/rain.svg", '11', '5', 0xFF3D3F4E),
-  WeatherDetailsDayItem('Sunday, 17', "assets/images/mist.svg", '11', '5', 0xFF3D3F4E),
-  WeatherDetailsDayItem('Monday, 18', "assets/images/snow.svg", '11', '5', 0xFF3D3F4E),
-  WeatherDetailsDayItem('Tuesday, 19', "assets/images/clear_sky.svg", '11', '5', 0xFF3D3F4E),
-];
 
 class _Screen extends StatelessWidget {
   @override
@@ -66,22 +44,7 @@ class _Screen extends StatelessWidget {
                   child: ToolbarWithDate(controller.city, controller.palette),
                 ),
                 Expanded(
-                  child: SingleChildScrollView(
-                    scrollDirection: Axis.vertical,
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(left: 50, top: 40),
-                          child: _HourList(),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 50, top: 36, right: 40),
-                          child: _DayList(),
-                        ),
-                      ],
-                    ),
-                  ),
+                  child: _ScrollableContainer(),
                 ),
               ],
             ),
@@ -92,7 +55,45 @@ class _Screen extends StatelessWidget {
   }
 }
 
+class _ScrollableContainer extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<WeatherDetailsController>(builder: (context, controller, child) {
+      if (controller.inProgress) {
+        context.showLoaderOverlay();
+      } else {
+        context.hideLoaderOverlay();
+      }
+      return SingleChildScrollView(
+        scrollDirection: Axis.vertical,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(left: 50, top: 40),
+              child: _HourList(controller.weatherHourItems),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 50, top: 36, right: 40),
+              child: _DayList(controller.weatherDayItems),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 50, top: 36, right: 40, bottom: 40),
+              child: WeatherAdditionalProperties(
+                  controller.weatherAdditionalItems, controller.palette),
+            ),
+          ],
+        ),
+      );
+    });
+  }
+}
+
 class _HourList extends StatelessWidget {
+  final List<WeatherDetailsHourItem> _items;
+
+  _HourList(this._items);
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -103,22 +104,25 @@ class _HourList extends StatelessWidget {
           return false;
         },
         child: ListView.separated(
-          separatorBuilder: (context, index) => SizedBox(width: 22),
-          scrollDirection: Axis.horizontal,
-          shrinkWrap: true,
-          itemCount: itemList.length,
-          itemBuilder: (context, index) => itemList[index]
-        ),
+            separatorBuilder: (context, index) => SizedBox(width: 22),
+            scrollDirection: Axis.horizontal,
+            shrinkWrap: true,
+            itemCount: _items.length,
+            itemBuilder: (context, index) => _items[index]),
       ),
     );
   }
 }
 
 class _DayList extends StatelessWidget {
+  final List<WeatherDetailsDayItem> _items;
+
+  _DayList(this._items);
+
   @override
   Widget build(BuildContext context) {
     return Column(
-      children: itemList2,
+      children: _items,
     );
   }
 }

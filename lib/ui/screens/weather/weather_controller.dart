@@ -19,6 +19,7 @@ class WeatherController with ChangeNotifier {
   bool inProgress;
   bool isError = false;
   String errorMessage;
+  List<WeatherGridItem> weatherAdditionalItems = [];
 
   WeatherController(CityWithPalette cityWithPalette) {
     city = cityWithPalette.city;
@@ -29,11 +30,12 @@ class WeatherController with ChangeNotifier {
       inProgress = false;
       weather = value;
       palette = _dayNightPalette.getPalette(weather);
+      weatherAdditionalItems = _getGridItems();
       notifyListeners();
     });
   }
 
-  List<WeatherGridItem> getGridItems() {
+  List<WeatherGridItem> _getGridItems() {
     List<WeatherGridItem> result = [];
     if (weather != null) {
       result.add(WeatherGridItem('Wind speed', '${weather.windSpeed ?? 'N/A'} meter/sec'));

@@ -7,8 +7,8 @@ import 'package:sweaterweather/app_router.dart';
 import 'package:sweaterweather/models/city_with_palette.dart';
 import 'package:sweaterweather/ui/screens/weather/weather_controller.dart';
 import 'package:sweaterweather/ui/widgets/rainbow_spinner_widget.dart';
-import 'package:sweaterweather/ui/widgets/single_property_widget.dart';
 import 'package:sweaterweather/ui/widgets/toolbar_with_date_widget.dart';
+import 'package:sweaterweather/ui/widgets/weather_additional_properties.dart';
 import 'package:sweaterweather/utils/weather_icon_utils.dart';
 
 class WeatherScreen extends StatelessWidget {
@@ -55,7 +55,8 @@ class _Screen extends StatelessWidget {
                         ),
                         Padding(
                           padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 58),
-                          child: _WeatherAdditionalProperties(),
+                          child: WeatherAdditionalProperties(
+                              controller.weatherAdditionalItems, controller.palette),
                         ),
                         Padding(
                           padding: const EdgeInsets.only(top: 44),
@@ -181,52 +182,5 @@ class _WeatherWidget extends StatelessWidget {
         );
       }
     });
-  }
-}
-
-class _WeatherAdditionalProperties extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Consumer<WeatherController>(builder: (context, controller, child) {
-      final items = controller.getGridItems();
-      if (items.isNotEmpty) {
-        return Row(
-          children: <Widget>[
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: _listWithDividers(items.take(3).map((item) => SinglePropertyWidget(
-                  item.title,
-                  item.subtitle,
-                  controller.palette.secondaryFontColor,
-                  controller.palette.primaryFontColor))),
-            ),
-            SizedBox(width: 50),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: _listWithDividers(items.skip(3).map((item) => SinglePropertyWidget(
-                  item.title,
-                  item.subtitle,
-                  controller.palette.secondaryFontColor,
-                  controller.palette.primaryFontColor))),
-            ),
-          ],
-        );
-      } else {
-        return Container();
-      }
-    });
-  }
-
-  List<Widget> _listWithDividers(Iterable<Widget> list) {
-    List<Widget> result = [];
-    for (var i = 0; i < list.length; i++) {
-      if (i == 0) {
-        result.add(list.elementAt(i));
-      } else {
-        result.add(const SizedBox(height: 30));
-        result.add(list.elementAt(i));
-      }
-    }
-    return result;
   }
 }
