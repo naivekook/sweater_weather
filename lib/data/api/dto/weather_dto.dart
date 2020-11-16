@@ -1,6 +1,8 @@
+import 'package:sweaterweather/data/api/dto/weather_condition_dto.dart';
+
 class WeatherDto {
   CoordDto coord;
-  List<WeatherConditionDto> weather;
+  List<WeatherConditionDto> weatherCondition;
   String base;
   MainDto main;
   int visibility;
@@ -15,7 +17,7 @@ class WeatherDto {
 
   WeatherDto(
       {this.coord,
-      this.weather,
+      this.weatherCondition,
       this.base,
       this.main,
       this.visibility,
@@ -31,9 +33,9 @@ class WeatherDto {
   WeatherDto.fromJson(Map<String, dynamic> json) {
     coord = json['coord'] != null ? new CoordDto.fromJson(json['coord']) : null;
     if (json['weather'] != null) {
-      weather = new List<WeatherConditionDto>();
+      weatherCondition = new List<WeatherConditionDto>();
       json['weather'].forEach((v) {
-        weather.add(new WeatherConditionDto.fromJson(v));
+        weatherCondition.add(new WeatherConditionDto.fromJson(v));
       });
     }
     base = json['base'];
@@ -54,8 +56,8 @@ class WeatherDto {
     if (this.coord != null) {
       data['coord'] = this.coord.toJson();
     }
-    if (this.weather != null) {
-      data['weather'] = this.weather.map((v) => v.toJson()).toList();
+    if (this.weatherCondition != null) {
+      data['weather'] = this.weatherCondition.map((v) => v.toJson()).toList();
     }
     data['base'] = this.base;
     if (this.main != null) {
@@ -95,31 +97,6 @@ class CoordDto {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['lon'] = this.lon;
     data['lat'] = this.lat;
-    return data;
-  }
-}
-
-class WeatherConditionDto {
-  int id;
-  String main;
-  String description;
-  String icon;
-
-  WeatherConditionDto({this.id, this.main, this.description, this.icon});
-
-  WeatherConditionDto.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    main = json['main'];
-    description = json['description'];
-    icon = json['icon'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['main'] = this.main;
-    data['description'] = this.description;
-    data['icon'] = this.icon;
     return data;
   }
 }

@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
+import 'package:sweaterweather/data/api/dto/detailed_weather_dto.dart';
 import 'package:sweaterweather/data/api/dto/find_city_dto.dart';
 import 'package:sweaterweather/data/api/dto/weather_dto.dart';
 import 'package:sweaterweather/models/custom_exceptions.dart';
@@ -34,6 +35,12 @@ class WeatherApi {
     return await compute(_parseWeather, response.body);
   }
 
+  Future<DetailedWeatherDto> getDetailedWeatherByLocation(double lat, double lon) async {
+    final response = await _makeCall(
+        '$URL/onecall?lat=$lat&lon=$lon&units=metric&exclude=minutely&appid=$_apiKey');
+    return await compute(_parseDetailedWeather, response.body);
+  }
+
   Future<http.Response> _makeCall(String url) async {
     try {
       final response = await http.get(url);
@@ -63,4 +70,9 @@ List<FindCityDto> _parseFindCity(String responseBody) {
 WeatherDto _parseWeather(String responseBody) {
   final Map<String, dynamic> json = jsonDecode(responseBody);
   return WeatherDto.fromJson(json);
+}
+
+DetailedWeatherDto _parseDetailedWeather(String responseBody) {
+  final Map<String, dynamic> json = jsonDecode(responseBody);
+  return DetailedWeatherDto.fromJson(json);
 }
