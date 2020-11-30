@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:provider/provider.dart';
@@ -50,7 +49,7 @@ class _Screen extends StatelessWidget {
                     child: Column(
                       children: <Widget>[
                         Padding(
-                          padding: const EdgeInsets.only(left: 58, top: 8, right: 34, bottom: 8),
+                          padding: const EdgeInsets.only(left: 58, right: 34),
                           child: _WeatherWidget(),
                         ),
                         Padding(
@@ -59,25 +58,28 @@ class _Screen extends StatelessWidget {
                               controller.weatherAdditionalItems, controller.palette),
                         ),
                         Padding(
-                          padding: const EdgeInsets.only(top: 44),
-                          child: FlatButton(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8.0),
-                              side: BorderSide(color: Color(controller.palette.secondaryFontColor)),
-                            ),
-                            onPressed: () {
-                              final args = CityWithPalette(controller.city, controller.palette);
-                              Navigator.pushNamed(context, AppRouter.WEATHER_DETAILS,
-                                  arguments: args);
-                            },
-                            child: Text(
-                              "More details",
-                              style: GoogleFonts.inter(
-                                  textStyle: TextStyle(
-                                      color: Color(controller.palette.primaryFontColor),
-                                      fontSize: 14,
-                                      fontStyle: FontStyle.normal,
-                                      fontWeight: FontWeight.w800)),
+                          padding: const EdgeInsets.only(bottom: 16),
+                          child: Visibility(
+                            visible: !controller.inProgress,
+                            child: FlatButton(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8),
+                                side: BorderSide(color: Color(controller.palette.secondaryColor)),
+                              ),
+                              onPressed: () {
+                                final args = CityWithPalette(controller.city, controller.palette);
+                                Navigator.pushNamed(context, AppRouter.WEATHER_DETAILS,
+                                    arguments: args);
+                              },
+                              child: Text(
+                                "More details",
+                                style: GoogleFonts.inter(
+                                    textStyle: TextStyle(
+                                        color: Color(controller.palette.primaryColor),
+                                        fontSize: 14,
+                                        fontStyle: FontStyle.normal,
+                                        fontWeight: FontWeight.w800)),
+                              ),
                             ),
                           ),
                         )
@@ -110,15 +112,16 @@ class _WeatherWidget extends StatelessWidget {
           children: <Widget>[
             Container(
               alignment: Alignment.topRight,
-              child: Padding(
-                padding: const EdgeInsets.only(bottom: 20),
-                child: Image.asset(WeatherIconUtils.codeToIllustration(controller.weather.icon)),
+              child: Image.asset(
+                WeatherIconUtils.codeToIllustration(controller.weather.icon),
+                width: 160,
+                fit: BoxFit.scaleDown,
               ),
             ),
             Container(
               alignment: Alignment.bottomLeft,
               child: Padding(
-                padding: const EdgeInsets.only(top: 20),
+                padding: const EdgeInsets.only(top: 40),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: <Widget>[
@@ -126,7 +129,7 @@ class _WeatherWidget extends StatelessWidget {
                       controller.weather.temp.toInt().toString(),
                       style: GoogleFonts.inter(
                           textStyle: TextStyle(
-                              color: Color(controller.palette.primaryFontColor),
+                              color: Color(controller.palette.primaryColor),
                               fontSize: 112,
                               fontStyle: FontStyle.normal,
                               fontWeight: FontWeight.w800)),
@@ -136,11 +139,11 @@ class _WeatherWidget extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
-                          SvgPicture.asset(
-                            'assets/images/donut.svg',
+                          Image.asset(
+                            'assets/icons/ic_donut.png',
                             width: 40,
                             height: 40,
-                            color: Color(controller.palette.primaryFontColor),
+                            color: Color(controller.palette.primaryColor),
                           ),
                           SizedBox(height: 8),
                           Padding(
@@ -152,7 +155,7 @@ class _WeatherWidget extends StatelessWidget {
                               overflow: TextOverflow.fade,
                               style: GoogleFonts.inter(
                                   textStyle: TextStyle(
-                                      color: Color(controller.palette.primaryFontColor),
+                                      color: Color(controller.palette.primaryColor),
                                       fontSize: 14,
                                       fontStyle: FontStyle.normal,
                                       fontWeight: FontWeight.normal)),
@@ -165,7 +168,7 @@ class _WeatherWidget extends StatelessWidget {
                               'Feels like ${controller.weather.tempFeelsLike.toInt()}°C',
                               style: GoogleFonts.inter(
                                   textStyle: TextStyle(
-                                      color: Color(controller.palette.primaryFontColor),
+                                      color: Color(controller.palette.primaryColor),
                                       fontSize: 14,
                                       fontStyle: FontStyle.normal,
                                       fontWeight: FontWeight.normal)),

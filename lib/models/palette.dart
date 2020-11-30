@@ -1,5 +1,5 @@
 abstract class Palette {
-  int primaryFontColor;
-  int secondaryFontColor;
+  int primaryColor;
+  int secondaryColor;
   int backgroundColor;
 }

@@ -46,7 +46,7 @@ class _WeatherIconLoaderState extends State<WeatherIconLoader> {
     return Container(
       alignment: Alignment.center,
       child: Image.asset(
-        'assets/illustrations/${widget._imageList[_pos]}',
+        'assets/images/${widget._imageList[_pos]}',
         width: 75,
         height: 75,
       ),

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sweaterweather/ui/screens/addcity/add_city_list_item.dart';
 
@@ -18,16 +17,12 @@ class AddCityListTile extends StatelessWidget {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            RichText(
-              text: TextSpan(children: [
-                WidgetSpan(
-                  child: Padding(
-                    padding: const EdgeInsets.only(right: 8),
-                    child: SvgPicture.asset(item.icon, width: 16, height: 16),
-                  ),
-                ),
-                TextSpan(
-                  text: '${item.city.name}, ',
+            Row(
+              children: [
+                Image.asset(item.icon, width: 24, height: 24),
+                SizedBox(width: 8),
+                Text(
+                  '${item.city.name}, ',
                   style: GoogleFonts.inter(
                       textStyle: TextStyle(
                           color: const Color(0xFF3D3F4E),
@@ -35,18 +30,18 @@ class AddCityListTile extends StatelessWidget {
                           fontStyle: FontStyle.normal,
                           fontWeight: FontWeight.w800)),
                 ),
-                TextSpan(
-                  text: item.city.countryName,
+                Text(
+                  item.city.countryName,
                   style: GoogleFonts.inter(
                       textStyle: TextStyle(
                           color: const Color(0xFF3D3F4E),
                           fontSize: 14,
                           fontStyle: FontStyle.normal,
-                          fontWeight: FontWeight.normal)),
+                          fontWeight: FontWeight.w400)),
                 ),
-              ]),
+              ],
             ),
-            SizedBox(height: 6),
+            SizedBox(height: 2),
             Text(
               '${item.temp}°C, ${item.weather}',
               style: GoogleFonts.inter(
@@ -54,11 +49,14 @@ class AddCityListTile extends StatelessWidget {
                       color: const Color(0xFF7F808C),
                       fontSize: 14,
                       fontStyle: FontStyle.normal,
-                      fontWeight: FontWeight.normal)),
+                      fontWeight: FontWeight.w400)),
             )
           ],
         ),
-        _createButton(item.added),
+        Padding(
+          padding: const EdgeInsets.only(left: 8),
+          child: _createButton(item.added),
+        ),
       ],
     );
   }
@@ -71,9 +69,7 @@ class AddCityListTile extends StatelessWidget {
             added ? 'Added' : 'Add',
             style: GoogleFonts.inter(
                 textStyle: TextStyle(
-                    color: added
-                        ? const Color(0xFF24B021)
-                        : const Color(0xFF3D3F4E),
+                    color: added ? const Color(0xFF24B021) : const Color(0xFF3D3F4E),
                     fontSize: 14,
                     fontStyle: FontStyle.normal,
                     fontWeight: FontWeight.normal)),

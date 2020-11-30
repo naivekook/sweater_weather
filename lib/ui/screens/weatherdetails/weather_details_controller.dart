@@ -42,13 +42,17 @@ class WeatherDetailsController with ChangeNotifier {
   }
 
   void _updateModels() {
+    final now = DateTime.now();
+    final today = DateTime(now.year, now.month, now.day, 23, 59, 59, 999);
     weatherHourItems = detailedWeather.weatherByHour
+        .where((element) => element.dt * 1000 <= today.millisecondsSinceEpoch)
         .map((e) => WeatherDetailsHourItem(
             '${e.temp.toInt()}°',
             WeatherIconUtils.codeToImage(e.icon),
-            DateFormat(DateFormat.HOUR24_MINUTE).format(DateTime.fromMillisecondsSinceEpoch(e.dt * 1000)),
-            palette.primaryFontColor,
-            palette.secondaryFontColor))
+            DateFormat(DateFormat.HOUR24_MINUTE)
+                .format(DateTime.fromMillisecondsSinceEpoch(e.dt * 1000)),
+            palette.primaryColor,
+            palette.secondaryColor))
         .toList();
     weatherDayItems = detailedWeather.weatherByDay
         .map((e) => WeatherDetailsDayItem(
@@ -56,7 +60,7 @@ class WeatherDetailsController with ChangeNotifier {
             WeatherIconUtils.codeToImage(e.icon),
             '${e.tempDay.toInt()}°',
             '${e.tempNight.toInt()}°',
-            palette.primaryFontColor))
+            palette.primaryColor))
         .toList();
     weatherAdditionalItems = _getGridItems();
   }

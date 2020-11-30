@@ -18,7 +18,6 @@ dependencies:
   google_fonts: ^1.1.0
   get_it: ^5.0.1
   intl: ^0.16.1
-  flutter_svg: ^0.19.0
   firebase_core: ^0.5.1
   firebase_analytics: ^6.1.0
   firebase_crashlytics: ^0.2.1+1
@@ -33,6 +32,6 @@ flutter:
   uses-material-design: true
   assets:
     - .env
+    - assets/icons/
     - assets/images/
-    - assets/illustrations/
     - assets/country_codes.json

@@ -33,7 +33,7 @@ class _RainbowSpinnerWidgetState extends State<RainbowSpinnerWidget>
           child: child,
         );
       },
-      child: Image.asset('assets/illustrations/rainbow.png', width: 50, height: 50),
+      child: Image.asset('assets/images/rainbow.png', width: 50, height: 50),
     );
   }
 }

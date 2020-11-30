@@ -19,8 +19,8 @@ class WeatherAdditionalProperties extends StatelessWidget {
             children: _listWithDividers(_items.take(3).map((item) => SinglePropertyWidget(
                 item.title,
                 item.subtitle,
-                _palette.secondaryFontColor,
-                _palette.primaryFontColor))),
+                _palette.secondaryColor,
+                _palette.primaryColor))),
           ),
           SizedBox(width: 50),
           Column(
@@ -28,8 +28,8 @@ class WeatherAdditionalProperties extends StatelessWidget {
             children: _listWithDividers(_items.skip(3).map((item) => SinglePropertyWidget(
                 item.title,
                 item.subtitle,
-                _palette.secondaryFontColor,
-                _palette.primaryFontColor))),
+                _palette.secondaryColor,
+                _palette.primaryColor))),
           ),
         ],
       );

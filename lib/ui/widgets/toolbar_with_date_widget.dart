@@ -18,8 +18,8 @@ class ToolbarWithDate extends StatelessWidget {
     DateTime dateTime = DateTime.now();
     date = '${DateFormat('MMMM').format(dateTime)}, ${DateFormat('d').format(dateTime)}';
     dayOfWeek = DateFormat.EEEE().format(dateTime);
-    primaryFontColor = palette.primaryFontColor;
-    secondaryFontColor = palette.secondaryFontColor;
+    primaryFontColor = palette.primaryColor;
+    secondaryFontColor = palette.secondaryColor;
   }
 
   @override

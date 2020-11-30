@@ -158,10 +158,7 @@ class _CityListItemWidget extends StatelessWidget {
         children: <Widget>[
           Container(
             alignment: Alignment.centerRight,
-            child: Padding(
-              padding: const EdgeInsets.all(24),
-              child: Image(image: AssetImage(data.image)),
-            ),
+            child: Image.asset(data.image),
           ),
           Visibility(
             visible: data.isFromLocation,
@@ -169,7 +166,7 @@ class _CityListItemWidget extends StatelessWidget {
               alignment: Alignment.bottomRight,
               child: Padding(
                 padding: const EdgeInsets.all(8),
-                child: Image.asset("assets/illustrations/ic_location.png"),
+                child: Image.asset("assets/icons/ic_location.png"),
               ),
             ),
           ),
@@ -181,7 +178,7 @@ class _CityListItemWidget extends StatelessWidget {
                   '${data.temp}°',
                   style: GoogleFonts.inter(
                       textStyle: TextStyle(
-                          color: Color(data.palette.primaryFontColor),
+                          color: Color(data.palette.primaryColor),
                           fontSize: 52,
                           fontStyle: FontStyle.normal,
                           fontWeight: FontWeight.w800)),
@@ -199,7 +196,7 @@ class _CityListItemWidget extends StatelessWidget {
                         overflow: TextOverflow.fade,
                         style: GoogleFonts.inter(
                             textStyle: TextStyle(
-                                color: Color(data.palette.primaryFontColor),
+                                color: Color(data.palette.primaryColor),
                                 fontSize: 20,
                                 fontStyle: FontStyle.normal,
                                 fontWeight: FontWeight.w800)),
@@ -213,7 +210,7 @@ class _CityListItemWidget extends StatelessWidget {
                           overflow: TextOverflow.ellipsis,
                           style: GoogleFonts.inter(
                               textStyle: TextStyle(
-                                  color: Color(data.palette.secondaryFontColor),
+                                  color: Color(data.palette.secondaryColor),
                                   fontSize: 14,
                                   fontStyle: FontStyle.normal,
                                   fontWeight: FontWeight.normal)),

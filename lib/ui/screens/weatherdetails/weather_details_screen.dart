@@ -67,23 +67,23 @@ class _ScrollableContainer extends StatelessWidget {
       return SingleChildScrollView(
         scrollDirection: Axis.vertical,
         child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(left: 50, top: 40),
-              child: _HourList(controller.weatherHourItems),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 50, top: 36, right: 40),
-              child: _DayList(controller.weatherDayItems),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 50, top: 36, right: 40, bottom: 40),
-              child: WeatherAdditionalProperties(
-                  controller.weatherAdditionalItems, controller.palette),
-            ),
-          ],
-        ),
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(left: 50, top: 40),
+                child: _HourList(controller.weatherHourItems),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 50, top: 36, right: 40),
+                child: _DayList(controller.weatherDayItems),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 50, top: 36, right: 40, bottom: 40),
+                child: WeatherAdditionalProperties(
+                    controller.weatherAdditionalItems, controller.palette),
+              ),
+            ]),
       );
     });
   }
@@ -104,11 +104,12 @@ class _HourList extends StatelessWidget {
           return false;
         },
         child: ListView.separated(
-            separatorBuilder: (context, index) => SizedBox(width: 22),
-            scrollDirection: Axis.horizontal,
-            shrinkWrap: true,
-            itemCount: _items.length,
-            itemBuilder: (context, index) => _items[index]),
+          separatorBuilder: (context, index) => SizedBox(width: 22),
+          scrollDirection: Axis.horizontal,
+          shrinkWrap: true,
+          itemCount: _items.length,
+          itemBuilder: (context, index) => _items[index],
+        ),
       ),
     );
   }
@@ -121,8 +122,6 @@ class _DayList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: _items,
-    );
+    return Column(children: _items);
   }
 }

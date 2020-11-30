@@ -1,16 +1,15 @@
 import 'package:flutter/widgets.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class WeatherDetailsHourItem extends StatelessWidget {
   final String degreeText;
   final String iconPath;
   final String timeText;
-  final int degreeTextColor;
-  final int timeTextColor;
+  final int primaryColor;
+  final int secondaryColor;
 
   WeatherDetailsHourItem(
-      this.degreeText, this.iconPath, this.timeText, this.degreeTextColor, this.timeTextColor);
+      this.degreeText, this.iconPath, this.timeText, this.primaryColor, this.secondaryColor);
 
   @override
   Widget build(BuildContext context) {
@@ -20,27 +19,20 @@ class WeatherDetailsHourItem extends StatelessWidget {
           degreeText,
           style: GoogleFonts.inter(
               textStyle: TextStyle(
-                  color: Color(degreeTextColor),
+                  color: Color(primaryColor),
                   fontSize: 14,
                   fontStyle: FontStyle.normal,
                   fontWeight: FontWeight.w800)),
         ),
         Container(
           alignment: Alignment.center,
-          height: 38,
-          width: 38,
-          child: SvgPicture.asset(
-            iconPath,
-            width: 20,
-            height: 20,
-            fit: BoxFit.scaleDown,
-          ),
+          child: Image.asset(iconPath, color: Color(primaryColor)),
         ),
         Text(
           timeText,
           style: GoogleFonts.inter(
               textStyle: TextStyle(
-                  color: Color(timeTextColor),
+                  color: Color(secondaryColor),
                   fontSize: 9,
                   fontStyle: FontStyle.normal,
                   fontWeight: FontWeight.normal)),

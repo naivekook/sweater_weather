@@ -1,5 +1,4 @@
 import 'package:flutter/widgets.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class WeatherDetailsDayItem extends StatelessWidget {
@@ -31,14 +30,7 @@ class WeatherDetailsDayItem extends StatelessWidget {
         ),
         Container(
           alignment: Alignment.center,
-          height: 38,
-          width: 38,
-          child: SvgPicture.asset(
-            iconPath,
-            width: 20,
-            height: 20,
-            fit: BoxFit.scaleDown,
-          ),
+          child: Image.asset(iconPath, color: Color(textColor)),
         ),
         SizedBox(width: 24),
         Text(
