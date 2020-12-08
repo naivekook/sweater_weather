@@ -11,25 +11,20 @@ class WeatherAdditionalProperties extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    int halfArray = _items.length ~/ 2;
     if (_items.isNotEmpty) {
       return Row(
         children: <Widget>[
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: _listWithDividers(_items.take(3).map((item) => SinglePropertyWidget(
-                item.title,
-                item.subtitle,
-                _palette.secondaryColor,
-                _palette.primaryColor))),
+            children: _listWithDividers(_items.take(halfArray).map((item) => SinglePropertyWidget(
+                item.title, item.subtitle, _palette.secondaryColor, _palette.primaryColor))),
           ),
           SizedBox(width: 50),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: _listWithDividers(_items.skip(3).map((item) => SinglePropertyWidget(
-                item.title,
-                item.subtitle,
-                _palette.secondaryColor,
-                _palette.primaryColor))),
+            children: _listWithDividers(_items.skip(halfArray).map((item) => SinglePropertyWidget(
+                item.title, item.subtitle, _palette.secondaryColor, _palette.primaryColor))),
           ),
         ],
       );

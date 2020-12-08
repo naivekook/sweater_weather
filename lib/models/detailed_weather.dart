@@ -4,8 +4,10 @@ class DetailedWeather {
   Weather weather;
   List<HourWeather> weatherByHour;
   List<DayWeather> weatherByDay;
+  int uvi;
+  int windDegree;
 
-  DetailedWeather(this.weather, this.weatherByHour, this.weatherByDay);
+  DetailedWeather(this.weather, this.weatherByHour, this.weatherByDay, this.uvi, this.windDegree);
 
   DetailedWeather.fromJson(Map<String, dynamic> json) {
     if (json['weather'] != null) {

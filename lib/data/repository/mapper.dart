@@ -59,6 +59,7 @@ class Mapper {
     List<DayWeather> weatherByDay = dto.daily
         .map((e) => DayWeather(e.dt, e.temp.day, e.temp.night, e.weatherCondition[0].icon))
         .toList();
-    return DetailedWeather(weather, weatherByHour, weatherByDay);
+    return DetailedWeather(
+        weather, weatherByHour, weatherByDay, dto.current.uvi.toInt(), dto.current.windDeg);
   }
 }

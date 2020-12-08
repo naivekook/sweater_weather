@@ -68,12 +68,6 @@ class WeatherDetailsController with ChangeNotifier {
   List<WeatherGridItem> _getGridItems() {
     List<WeatherGridItem> result = [];
     if (detailedWeather != null) {
-      result.add(
-          WeatherGridItem('Wind speed', '${detailedWeather.weather.windSpeed ?? 'N/A'} meter/sec'));
-      result.add(WeatherGridItem('Humidity', '${detailedWeather.weather.humidity ?? 'N/A'}%'));
-      result.add(WeatherGridItem('Cloudiness', '${detailedWeather.weather.cloudiness ?? 'N/A'}%'));
-      result.add(WeatherGridItem('Pressure', '${detailedWeather.weather.pressure ?? 'N/A'} hPa'));
-
       String sunriseTime = 'N/A';
       String sunsetTime = 'N/A';
       if (detailedWeather.weather.sunrise != null) {
@@ -85,8 +79,15 @@ class WeatherDetailsController with ChangeNotifier {
             .format(DateTime.fromMillisecondsSinceEpoch(detailedWeather.weather.sunset * 1000));
       }
 
+      result.add(WeatherGridItem('Wind speed', '${detailedWeather.weather.windSpeed ?? 'N/A'} meter/sec'));
       result.add(WeatherGridItem('Sunrise', sunriseTime));
+      result.add(WeatherGridItem('Humidity', '${detailedWeather.weather.humidity ?? 'N/A'}%'));
+      result.add(WeatherGridItem('Wind direction', '${detailedWeather.windDegree ?? 'N/A'} degree'));
+
+      result.add(WeatherGridItem('Pressure', '${detailedWeather.weather.pressure ?? 'N/A'} hPa'));
       result.add(WeatherGridItem('Sunset', sunsetTime));
+      result.add(WeatherGridItem('Cloudiness', '${detailedWeather.weather.cloudiness ?? 'N/A'}%'));
+      result.add(WeatherGridItem('UV index', '${detailedWeather.uvi ?? 'N/A'}'));
     }
     return result;
   }
