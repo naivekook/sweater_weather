@@ -71,15 +71,15 @@ class _ScrollableContainer extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
-                padding: const EdgeInsets.only(left: 50, top: 40),
+                padding: const EdgeInsets.only(left: 58, top: 40),
                 child: _HourList(controller.weatherHourItems),
               ),
               Padding(
-                padding: const EdgeInsets.only(left: 50, top: 36, right: 40),
+                padding: const EdgeInsets.only(left: 58, top: 36, right: 34),
                 child: _DayList(controller.weatherDayItems),
               ),
               Padding(
-                padding: const EdgeInsets.only(left: 50, top: 36, right: 40, bottom: 40),
+                padding: const EdgeInsets.only(left: 58, top: 36, right: 34, bottom: 40),
                 child: WeatherAdditionalProperties(
                     controller.weatherAdditionalItems, controller.palette),
               ),

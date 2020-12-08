@@ -30,7 +30,6 @@ class ToolbarWithDate extends StatelessWidget {
       children: <Widget>[
         Row(
           mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             IconButton(
               icon: Icon(
@@ -40,6 +39,7 @@ class ToolbarWithDate extends StatelessWidget {
               ),
               onPressed: () => Navigator.pop(context),
             ),
+            SizedBox(width: 2),
             Expanded(
               child: Text(
                 title,

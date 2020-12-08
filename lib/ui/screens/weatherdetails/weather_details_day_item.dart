@@ -28,29 +28,32 @@ class WeatherDetailsDayItem extends StatelessWidget {
             ),
           ),
         ),
+        Image.asset(iconPath, color: Color(textColor)),
         Container(
-          alignment: Alignment.center,
-          child: Image.asset(iconPath, color: Color(textColor)),
+          alignment: Alignment.centerRight,
+          width: 48,
+          child: Text(
+            dayTemp,
+            style: GoogleFonts.inter(
+                textStyle: TextStyle(
+                    color: Color(textColor),
+                    fontSize: 14,
+                    fontStyle: FontStyle.normal,
+                    fontWeight: FontWeight.w800)),
+          ),
         ),
-        SizedBox(width: 24),
-        Text(
-          dayTemp,
-          style: GoogleFonts.inter(
-              textStyle: TextStyle(
-                  color: Color(textColor),
-                  fontSize: 14,
-                  fontStyle: FontStyle.normal,
-                  fontWeight: FontWeight.w800)),
-        ),
-        SizedBox(width: 24),
-        Text(
-          nightTemp,
-          style: GoogleFonts.inter(
-              textStyle: TextStyle(
-                  color: Color(textColor),
-                  fontSize: 14,
-                  fontStyle: FontStyle.normal,
-                  fontWeight: FontWeight.w800)),
+        Container(
+          alignment: Alignment.centerRight,
+          width: 48,
+          child: Text(
+            nightTemp,
+            style: GoogleFonts.inter(
+                textStyle: TextStyle(
+                    color: Color(textColor),
+                    fontSize: 14,
+                    fontStyle: FontStyle.normal,
+                    fontWeight: FontWeight.w800)),
+          ),
         ),
       ],
     );
