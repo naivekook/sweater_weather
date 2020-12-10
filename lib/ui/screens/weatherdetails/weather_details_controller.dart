@@ -79,10 +79,12 @@ class WeatherDetailsController with ChangeNotifier {
             .format(DateTime.fromMillisecondsSinceEpoch(detailedWeather.weather.sunset * 1000));
       }
 
-      result.add(WeatherGridItem('Wind speed', '${detailedWeather.weather.windSpeed ?? 'N/A'} meter/sec'));
+      result.add(
+          WeatherGridItem('Wind speed', '${detailedWeather.weather.windSpeed ?? 'N/A'} meter/sec'));
       result.add(WeatherGridItem('Sunrise', sunriseTime));
       result.add(WeatherGridItem('Humidity', '${detailedWeather.weather.humidity ?? 'N/A'}%'));
-      result.add(WeatherGridItem('Wind direction', '${detailedWeather.windDegree ?? 'N/A'} degree'));
+      result
+          .add(WeatherGridItem('Wind direction', _windDirectionToText(detailedWeather.windDegree)));
 
       result.add(WeatherGridItem('Pressure', '${detailedWeather.weather.pressure ?? 'N/A'} hPa'));
       result.add(WeatherGridItem('Sunset', sunsetTime));
@@ -90,5 +92,18 @@ class WeatherDetailsController with ChangeNotifier {
       result.add(WeatherGridItem('UV index', '${detailedWeather.uvi ?? 'N/A'}'));
     }
     return result;
+  }
+
+  String _windDirectionToText(int angle) {
+    if (angle == null) {
+      return 'N/A';
+    } else {
+      return '${_getCardinalDirection(angle)} ($angle degree)';
+    }
+  }
+
+  String _getCardinalDirection(int angle) {
+    const directions = ['↑ N', '↗ NE', '→ E', '↘ SE', '↓ S', '↙ SW', '← W', '↖ NW'];
+    return directions[(angle / 45).round() % 8];
   }
 }
