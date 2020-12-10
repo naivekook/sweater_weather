@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:provider/provider.dart';
+import 'package:sweaterweather/app_router.dart';
 import 'package:sweaterweather/models/city_with_palette.dart';
 import 'package:sweaterweather/ui/screens/weather/weather_controller.dart';
 import 'package:sweaterweather/ui/widgets/rainbow_spinner_widget.dart';
-import 'package:sweaterweather/ui/widgets/single_property_widget.dart';
+import 'package:sweaterweather/ui/widgets/toolbar_with_date_widget.dart';
+import 'package:sweaterweather/ui/widgets/weather_additional_properties.dart';
 import 'package:sweaterweather/utils/weather_icon_utils.dart';
 
 class WeatherScreen extends StatelessWidget {
@@ -40,86 +41,56 @@ class _Screen extends StatelessWidget {
               children: <Widget>[
                 Padding(
                   padding: const EdgeInsets.only(left: 8, top: 20, bottom: 8, right: 34),
-                  child: _TopBarWidget(),
+                  child: ToolbarWithDate(controller.city, controller.palette),
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 58, top: 8, right: 34, bottom: 8),
-                  child: _WeatherWidget(),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 58),
-                  child: _WeatherAdditionalProperties(),
+                Expanded(
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.vertical,
+                    child: Column(
+                      children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.only(left: 58, right: 34),
+                          child: _WeatherWidget(),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 58),
+                          child: WeatherAdditionalProperties(
+                              controller.weatherAdditionalItems, controller.palette),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 16),
+                          child: Visibility(
+                            visible: !controller.inProgress,
+                            child: FlatButton(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8),
+                                side: BorderSide(color: Color(controller.palette.secondaryColor)),
+                              ),
+                              onPressed: () {
+                                final args = CityWithPalette(controller.city, controller.palette);
+                                Navigator.pushNamed(context, AppRouter.WEATHER_DETAILS,
+                                    arguments: args);
+                              },
+                              child: Text(
+                                "More details",
+                                style: GoogleFonts.inter(
+                                    textStyle: TextStyle(
+                                        color: Color(controller.palette.primaryColor),
+                                        fontSize: 14,
+                                        fontStyle: FontStyle.normal,
+                                        fontWeight: FontWeight.w800)),
+                              ),
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
                 ),
               ],
             ),
           ),
         ),
-      );
-    });
-  }
-}
-
-class _TopBarWidget extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Consumer<WeatherController>(builder: (context, controller, child) {
-      return Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              IconButton(
-                icon: Icon(
-                  Icons.arrow_back_ios,
-                  size: 20,
-                  color: Color(controller.palette.primaryFontColor),
-                ),
-                onPressed: () => Navigator.pop(context),
-              ),
-              Expanded(
-                child: Text(
-                  controller.headerInfo.title,
-                  maxLines: 1,
-                  softWrap: false,
-                  overflow: TextOverflow.fade,
-                  style: GoogleFonts.inter(
-                      textStyle: TextStyle(
-                          color: Color(controller.palette.primaryFontColor),
-                          fontSize: 32,
-                          fontStyle: FontStyle.normal,
-                          fontWeight: FontWeight.w800)),
-                ),
-              ),
-            ],
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: 50),
-            child: Text(
-              controller.headerInfo.date,
-              style: GoogleFonts.inter(
-                  textStyle: TextStyle(
-                      color: Color(controller.palette.secondaryFontColor),
-                      fontSize: 14,
-                      fontStyle: FontStyle.normal,
-                      fontWeight: FontWeight.normal)),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 6, left: 50),
-            child: Text(
-              controller.headerInfo.dayOfWeek,
-              style: GoogleFonts.inter(
-                  textStyle: TextStyle(
-                      color: Color(controller.palette.secondaryFontColor),
-                      fontSize: 14,
-                      fontStyle: FontStyle.normal,
-                      fontWeight: FontWeight.normal)),
-            ),
-          ),
-        ],
       );
     });
   }
@@ -141,15 +112,16 @@ class _WeatherWidget extends StatelessWidget {
           children: <Widget>[
             Container(
               alignment: Alignment.topRight,
-              child: Padding(
-                padding: const EdgeInsets.only(bottom: 20),
-                child: Image.asset(WeatherIconUtils.codeToIllustration(controller.weather.icon)),
+              child: Image.asset(
+                WeatherIconUtils.codeToIllustration(controller.weather.icon),
+                width: 160,
+                fit: BoxFit.scaleDown,
               ),
             ),
             Container(
               alignment: Alignment.bottomLeft,
               child: Padding(
-                padding: const EdgeInsets.only(top: 20),
+                padding: const EdgeInsets.only(top: 40),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: <Widget>[
@@ -157,7 +129,7 @@ class _WeatherWidget extends StatelessWidget {
                       controller.weather.temp.toInt().toString(),
                       style: GoogleFonts.inter(
                           textStyle: TextStyle(
-                              color: Color(controller.palette.primaryFontColor),
+                              color: Color(controller.palette.primaryColor),
                               fontSize: 112,
                               fontStyle: FontStyle.normal,
                               fontWeight: FontWeight.w800)),
@@ -167,11 +139,11 @@ class _WeatherWidget extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
-                          SvgPicture.asset(
-                            'assets/images/donut.svg',
+                          Image.asset(
+                            'assets/icons/ic_donut.png',
                             width: 40,
                             height: 40,
-                            color: Color(controller.palette.primaryFontColor),
+                            color: Color(controller.palette.primaryColor),
                           ),
                           SizedBox(height: 8),
                           Padding(
@@ -183,7 +155,7 @@ class _WeatherWidget extends StatelessWidget {
                               overflow: TextOverflow.fade,
                               style: GoogleFonts.inter(
                                   textStyle: TextStyle(
-                                      color: Color(controller.palette.primaryFontColor),
+                                      color: Color(controller.palette.primaryColor),
                                       fontSize: 14,
                                       fontStyle: FontStyle.normal,
                                       fontWeight: FontWeight.normal)),
@@ -196,7 +168,7 @@ class _WeatherWidget extends StatelessWidget {
                               'Feels like ${controller.weather.tempFeelsLike.toInt()}°C',
                               style: GoogleFonts.inter(
                                   textStyle: TextStyle(
-                                      color: Color(controller.palette.primaryFontColor),
+                                      color: Color(controller.palette.primaryColor),
                                       fontSize: 14,
                                       fontStyle: FontStyle.normal,
                                       fontWeight: FontWeight.normal)),
@@ -213,52 +185,5 @@ class _WeatherWidget extends StatelessWidget {
         );
       }
     });
-  }
-}
-
-class _WeatherAdditionalProperties extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Consumer<WeatherController>(builder: (context, controller, child) {
-      final items = controller.getGridItems();
-      if (items.isNotEmpty) {
-        return Row(
-          children: <Widget>[
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: _listWithDividers(items.take(3).map((item) => SinglePropertyWidget(
-                  item.title,
-                  item.subtitle,
-                  controller.palette.secondaryFontColor,
-                  controller.palette.primaryFontColor))),
-            ),
-            SizedBox(width: 50),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: _listWithDividers(items.skip(3).map((item) => SinglePropertyWidget(
-                  item.title,
-                  item.subtitle,
-                  controller.palette.secondaryFontColor,
-                  controller.palette.primaryFontColor))),
-            ),
-          ],
-        );
-      } else {
-        return Container();
-      }
-    });
-  }
-
-  List<Widget> _listWithDividers(Iterable<Widget> list) {
-    List<Widget> result = [];
-    for (var i = 0; i < list.length; i++) {
-      if (i == 0) {
-        result.add(list.elementAt(i));
-      } else {
-        result.add(const SizedBox(height: 30));
-        result.add(list.elementAt(i));
-      }
-    }
-    return result;
   }
 }

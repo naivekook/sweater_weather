@@ -7,51 +7,37 @@ import 'package:sweaterweather/models/city_with_palette.dart';
 import 'package:sweaterweather/models/palette.dart';
 import 'package:sweaterweather/models/weather.dart';
 import 'package:sweaterweather/ui/screens/weather/weather_grid_item.dart';
-import 'package:sweaterweather/ui/screens/weather/weather_header_info.dart';
 import 'package:sweaterweather/utils/day_night_palette.dart';
 
 class WeatherController with ChangeNotifier {
-  City _city;
   final WeatherRepository _weatherRepository = getIt.get();
   final DayNightPalette _dayNightPalette = getIt.get();
 
-  WeatherHeaderInfo headerInfo;
+  City city;
   Weather weather;
   Palette palette;
   bool inProgress;
   bool isError = false;
   String errorMessage;
+  List<WeatherGridItem> weatherAdditionalItems = [];
 
   WeatherController(CityWithPalette cityWithPalette) {
-    _city = cityWithPalette.city;
+    city = cityWithPalette.city;
     palette = cityWithPalette.palette;
     inProgress = true;
-    headerInfo = _getHeaderInfo();
     notifyListeners();
-    _weatherRepository.getWeatherForCity(_city).then((value) {
+    _weatherRepository.getWeatherForCity(city).then((value) {
       inProgress = false;
       weather = value;
       palette = _dayNightPalette.getPalette(weather);
+      weatherAdditionalItems = _getGridItems();
       notifyListeners();
     });
   }
 
-  WeatherHeaderInfo _getHeaderInfo() {
-    DateTime date = DateTime.now();
-    return WeatherHeaderInfo(
-        _city.name,
-        '${DateFormat('MMMM').format(date)}, ${DateFormat('d').format(date)}',
-        DateFormat.EEEE().format(date));
-  }
-
-  List<WeatherGridItem> getGridItems() {
+  List<WeatherGridItem> _getGridItems() {
     List<WeatherGridItem> result = [];
     if (weather != null) {
-      result.add(WeatherGridItem('Wind speed', '${weather.windSpeed ?? 'N/A'} meter/sec'));
-      result.add(WeatherGridItem('Humidity', '${weather.humidity ?? 'N/A'}%'));
-      result.add(WeatherGridItem('Cloudiness', '${weather.cloudiness ?? 'N/A'}%'));
-      result.add(WeatherGridItem('Pressure', '${weather.pressure ?? 'N/A'} hPa'));
-
       String sunriseTime = 'N/A';
       String sunsetTime = 'N/A';
       if (weather.sunrise != null) {
@@ -63,8 +49,13 @@ class WeatherController with ChangeNotifier {
             .format(DateTime.fromMillisecondsSinceEpoch(weather.sunset * 1000));
       }
 
+      result.add(WeatherGridItem('Wind speed', '${weather.windSpeed ?? 'N/A'} meter/sec'));
       result.add(WeatherGridItem('Sunrise', sunriseTime));
+      result.add(WeatherGridItem('Humidity', '${weather.humidity ?? 'N/A'}%'));
+
+      result.add(WeatherGridItem('Pressure', '${weather.pressure ?? 'N/A'} hPa'));
       result.add(WeatherGridItem('Sunset', sunsetTime));
+      result.add(WeatherGridItem('Cloudiness', '${weather.cloudiness ?? 'N/A'}%'));
     }
     return result;
   }

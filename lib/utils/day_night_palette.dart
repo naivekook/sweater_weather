@@ -33,10 +33,10 @@ class DayPalette implements Palette {
   int backgroundColor = 0xFFDDEEF3;
 
   @override
-  int primaryFontColor = 0xFF3D3F4E;
+  int primaryColor = 0xFF3D3F4E;
 
   @override
-  int secondaryFontColor = 0xFF7F808C;
+  int secondaryColor = 0xFF7F808C;
 }
 
 class NightPalette implements Palette {
@@ -44,8 +44,8 @@ class NightPalette implements Palette {
   int backgroundColor = 0xFF283143;
 
   @override
-  int primaryFontColor = 0xFFDDEEF3;
+  int primaryColor = 0xFFDDEEF3;
 
   @override
-  int secondaryFontColor = 0xFF7F808C;
+  int secondaryColor = 0xFF7F808C;
 }

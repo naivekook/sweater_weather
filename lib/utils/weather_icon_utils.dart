@@ -1,6 +1,6 @@
 class WeatherIconUtils {
+  static const String _iconsFolder = 'assets/icons';
   static const String _imagesFolder = 'assets/images';
-  static const String _illustrationsFolder = 'assets/illustrations';
 
   static String codeToImage(String iconCode) {
     String name;
@@ -33,7 +33,7 @@ class WeatherIconUtils {
         name = 'mist';
         break;
     }
-    return name != null ? '$_imagesFolder/$name.svg' : null;
+    return name != null ? '$_iconsFolder/$name.png' : null;
   }
 
   static String codeToIllustration(String iconCode) {
@@ -73,6 +73,6 @@ class WeatherIconUtils {
     } else {
       modification = 'day';
     }
-    return name != null ? '$_illustrationsFolder/${name}_$modification.png' : null;
+    return name != null ? '$_imagesFolder/${name}_$modification.png' : null;
   }
 }
