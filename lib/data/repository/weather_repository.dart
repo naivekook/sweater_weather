@@ -1,8 +1,8 @@
 import 'package:sweaterweather/data/api/weather_api.dart';
 import 'package:sweaterweather/data/repository/mapper.dart';
 import 'package:sweaterweather/data/storage/weather_storage.dart';
-import 'package:sweaterweather/models/city.dart';
-import 'package:sweaterweather/models/weather.dart';
+import 'package:sweaterweather/models/hive/city.dart';
+import 'package:sweaterweather/models/hive/weather.dart';
 
 class WeatherRepository {
   final WeatherApi _weatherApi;

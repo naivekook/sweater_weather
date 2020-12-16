@@ -1,4 +1,4 @@
-import 'package:sweaterweather/models/city.dart';
+import 'package:sweaterweather/models/hive/city.dart';
 import 'package:sweaterweather/models/palette.dart';
 
 class LocationListItem {

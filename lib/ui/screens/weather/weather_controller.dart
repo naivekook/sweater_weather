@@ -2,10 +2,10 @@ import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart';
 import 'package:sweaterweather/app_starter.dart';
 import 'package:sweaterweather/data/repository/weather_repository.dart';
-import 'package:sweaterweather/models/city.dart';
+import 'package:sweaterweather/models/hive/city.dart';
 import 'package:sweaterweather/models/city_with_palette.dart';
 import 'package:sweaterweather/models/palette.dart';
-import 'package:sweaterweather/models/weather.dart';
+import 'package:sweaterweather/models/hive/weather.dart';
 import 'package:sweaterweather/ui/screens/weather/weather_grid_item.dart';
 import 'package:sweaterweather/utils/day_night_palette.dart';
 

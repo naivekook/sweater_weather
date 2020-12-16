@@ -1,5 +1,5 @@
 import 'package:sweaterweather/models/palette.dart';
-import 'package:sweaterweather/models/weather.dart';
+import 'package:sweaterweather/models/hive/weather.dart';
 
 class DayNightPalette {
   final DayPalette _dayPalette = DayPalette();

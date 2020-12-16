@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
-import 'package:sweaterweather/models/city.dart';
+import 'package:sweaterweather/models/hive/city.dart';
 import 'package:sweaterweather/models/palette.dart';
 
 // ignore: must_be_immutable

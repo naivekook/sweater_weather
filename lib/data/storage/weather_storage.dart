@@ -1,24 +1,19 @@
-import 'dart:convert';
 
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:sweaterweather/models/weather.dart';
+import 'package:hive/hive.dart';
+import 'package:sweaterweather/models/hive/weather.dart';
 
 class WeatherStorage {
   static const _WEATHER_KEY = 'saved_weather';
 
   Future<List<Weather>> getWeather() async {
-    final prefs = await SharedPreferences.getInstance();
-    final json = prefs.getString(_WEATHER_KEY);
-    if (json != null) {
-      final List<dynamic> decoded = jsonDecode(json);
-      return decoded.map((e) => Weather.fromJson(e)).toList();
-    } else {
-      return [];
-    }
+    final box = await Hive.openBox(_WEATHER_KEY);
+    return box.values.toList().cast<Weather>();
   }
 
-  Future<void> saveWeather(List<Weather> items) async {
-    final prefs = await SharedPreferences.getInstance();
-    prefs.setString(_WEATHER_KEY, jsonEncode(items.map((e) => e.toJson()).toList()));
+  Future<void> saveWeather(List<Weather> weather) async {
+    final box = await Hive.openBox(_WEATHER_KEY);
+    weather.forEach((element) {
+      box.put(element.city.id, element);
+    });
   }
 }

@@ -1,8 +1,8 @@
-import 'package:sweaterweather/data/repository/mapper.dart';
 import 'package:sweaterweather/data/api/weather_api.dart';
+import 'package:sweaterweather/data/repository/mapper.dart';
 import 'package:sweaterweather/data/storage/city_storage.dart';
-import 'package:sweaterweather/models/city.dart';
-import 'package:sweaterweather/models/city_with_weather.dart';
+import 'package:sweaterweather/models/hive/city.dart';
+import 'package:sweaterweather/models/hive/weather.dart';
 
 class CityRepository {
   final WeatherApi _weatherApi;
@@ -11,12 +11,12 @@ class CityRepository {
 
   CityRepository(this._weatherApi, this._cityStorage);
 
-  Future<List<CityWithWeather>> findCityByName(String name) async {
+  Future<List<Weather>> findCityByName(String name) async {
     final result = await _weatherApi.findCityByName(name);
     return await _mapper.mapFindCityResponse(result);
   }
 
-  Future<List<CityWithWeather>> findCityByLocation(double lat, double lon) async {
+  Future<List<Weather>> findCityByLocation(double lat, double lon) async {
     final result = await _weatherApi.findCityByLocation(lat, lon);
     return await _mapper.mapFindCityResponse(result);
   }
