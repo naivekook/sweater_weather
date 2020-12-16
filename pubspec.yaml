@@ -12,17 +12,17 @@ dependencies:
   cupertino_icons: ^1.0.0
   flutter_dotenv: ^2.1.0
   http: ^0.12.2
-  geolocator: ^6.0.0+4
-  provider: ^4.3.2+2
-  shared_preferences: ^0.5.12
-  google_fonts: ^1.1.0
-  get_it: ^5.0.1
+  geolocator: ^6.1.13
+  provider: ^4.3.2+3
+  shared_preferences: ^0.5.12+4
+  google_fonts: ^1.1.1
+  get_it: ^5.0.3
   intl: ^0.16.1
-  firebase_core: ^0.5.1
-  firebase_analytics: ^6.1.0
-  firebase_crashlytics: ^0.2.1+1
-  url_launcher: ^5.7.2
-  loader_overlay: ^1.1.0+1
+  firebase_core: ^0.5.3
+  firebase_analytics: ^6.3.0
+  firebase_crashlytics: ^0.2.4
+  url_launcher: ^5.7.10
+  loader_overlay: ^1.1.1
 
 dev_dependencies:
   flutter_test:
