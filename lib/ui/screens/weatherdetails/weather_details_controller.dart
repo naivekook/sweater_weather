@@ -2,9 +2,11 @@ import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart';
 import 'package:sweaterweather/app_starter.dart';
 import 'package:sweaterweather/data/repository/detailed_weather_repository.dart';
-import 'package:sweaterweather/models/city.dart';
+import 'package:sweaterweather/data/repository/weather_repository.dart';
 import 'package:sweaterweather/models/city_with_palette.dart';
-import 'package:sweaterweather/models/detailed_weather.dart';
+import 'package:sweaterweather/models/hive/city.dart';
+import 'package:sweaterweather/models/hive/weather.dart';
+import 'package:sweaterweather/models/hive/weather_details.dart';
 import 'package:sweaterweather/models/palette.dart';
 import 'package:sweaterweather/ui/screens/weather/weather_grid_item.dart';
 import 'package:sweaterweather/ui/screens/weatherdetails/weather_details_day_item.dart';
@@ -14,10 +16,12 @@ import 'package:sweaterweather/utils/weather_icon_utils.dart';
 
 class WeatherDetailsController with ChangeNotifier {
   final DayNightPalette _dayNightPalette = getIt.get();
+  final WeatherRepository _weatherRepository = getIt.get();
   final DetailedWeatherRepository _detailedWeatherRepository = getIt.get();
 
   City city;
-  DetailedWeather detailedWeather;
+  Weather weather;
+  WeatherDetails detailedWeather;
   Palette palette;
   bool inProgress;
   bool isError = false;
@@ -32,12 +36,15 @@ class WeatherDetailsController with ChangeNotifier {
     palette = cityWithPalette.palette;
     inProgress = true;
     notifyListeners();
-    _detailedWeatherRepository.getWeatherForCity(city).then((value) {
-      inProgress = false;
-      detailedWeather = value;
-      palette = _dayNightPalette.getPalette(detailedWeather.weather);
-      _updateModels();
-      notifyListeners();
+    _weatherRepository.getWeatherForCity(city).then((value) {
+      weather = value;
+      palette = _dayNightPalette.getPalette(weather);
+      _detailedWeatherRepository.getWeatherForCity(city).then((value) {
+        inProgress = false;
+        detailedWeather = value;
+        _updateModels();
+        notifyListeners();
+      });
     });
   }
 
@@ -45,18 +52,18 @@ class WeatherDetailsController with ChangeNotifier {
     final now = DateTime.now();
     final today = DateTime(now.year, now.month, now.day, 23, 59, 59, 999);
     weatherHourItems = detailedWeather.weatherByHour
-        .where((element) => element.dt * 1000 <= today.millisecondsSinceEpoch)
+        .where((element) => element.timestamp * 1000 <= today.millisecondsSinceEpoch)
         .map((e) => WeatherDetailsHourItem(
             '${e.temp.toInt()}°',
             WeatherIconUtils.codeToImage(e.icon),
             DateFormat(DateFormat.HOUR24_MINUTE)
-                .format(DateTime.fromMillisecondsSinceEpoch(e.dt * 1000)),
+                .format(DateTime.fromMillisecondsSinceEpoch(e.timestamp * 1000)),
             palette.primaryColor,
             palette.secondaryColor))
         .toList();
     weatherDayItems = detailedWeather.weatherByDay
         .map((e) => WeatherDetailsDayItem(
-            DateFormat('EEEE, d').format(DateTime.fromMillisecondsSinceEpoch(e.dt * 1000)),
+            DateFormat('EEEE, d').format(DateTime.fromMillisecondsSinceEpoch(e.timestamp * 1000)),
             WeatherIconUtils.codeToImage(e.icon),
             '${e.tempDay.toInt()}°',
             '${e.tempNight.toInt()}°',
@@ -70,25 +77,24 @@ class WeatherDetailsController with ChangeNotifier {
     if (detailedWeather != null) {
       String sunriseTime = 'N/A';
       String sunsetTime = 'N/A';
-      if (detailedWeather.weather.sunrise != null) {
+      if (weather.sunrise != null) {
         sunriseTime = DateFormat(DateFormat.HOUR24_MINUTE)
-            .format(DateTime.fromMillisecondsSinceEpoch(detailedWeather.weather.sunrise * 1000));
+            .format(DateTime.fromMillisecondsSinceEpoch(weather.sunrise * 1000));
       }
-      if (detailedWeather.weather.sunset != null) {
+      if (weather.sunset != null) {
         sunsetTime = DateFormat(DateFormat.HOUR24_MINUTE)
-            .format(DateTime.fromMillisecondsSinceEpoch(detailedWeather.weather.sunset * 1000));
+            .format(DateTime.fromMillisecondsSinceEpoch(weather.sunset * 1000));
       }
 
-      result.add(
-          WeatherGridItem('Wind speed', '${detailedWeather.weather.windSpeed ?? 'N/A'} meter/sec'));
+      result.add(WeatherGridItem('Wind speed', '${weather.windSpeed ?? 'N/A'} meter/sec'));
       result.add(WeatherGridItem('Sunrise', sunriseTime));
-      result.add(WeatherGridItem('Humidity', '${detailedWeather.weather.humidity ?? 'N/A'}%'));
+      result.add(WeatherGridItem('Humidity', '${weather.humidity ?? 'N/A'}%'));
       result
           .add(WeatherGridItem('Wind direction', _windDirectionToText(detailedWeather.windDegree)));
 
-      result.add(WeatherGridItem('Pressure', '${detailedWeather.weather.pressure ?? 'N/A'} hPa'));
+      result.add(WeatherGridItem('Pressure', '${weather.pressure ?? 'N/A'} hPa'));
       result.add(WeatherGridItem('Sunset', sunsetTime));
-      result.add(WeatherGridItem('Cloudiness', '${detailedWeather.weather.cloudiness ?? 'N/A'}%'));
+      result.add(WeatherGridItem('Cloudiness', '${weather.cloudiness ?? 'N/A'}%'));
       result.add(WeatherGridItem('UV index', '${detailedWeather.uvi ?? 'N/A'}'));
     }
     return result;
