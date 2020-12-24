@@ -17,6 +17,9 @@ import 'package:sweaterweather/models/hive/weather.dart';
 import 'package:sweaterweather/models/hive/weather_by_day.dart';
 import 'package:sweaterweather/models/hive/weather_by_hour.dart';
 import 'package:sweaterweather/models/hive/weather_details.dart';
+import 'package:sweaterweather/services/current_location_service.dart';
+import 'package:sweaterweather/services/weather_expiration_service.dart';
+import 'package:sweaterweather/services/weather_updater_service.dart';
 import 'package:sweaterweather/utils/day_night_palette.dart';
 
 GetIt getIt = GetIt.instance;
@@ -27,19 +30,24 @@ class AppStarter {
     await _initHive();
     _initGraph();
     await _migrateToHive();
+    await _refreshWeather();
   }
 
   _initGraph() {
     getIt.registerSingleton(WeatherApi(DotEnv().env['WEATHER_API_KEY']));
+    getIt.registerSingleton(WeatherExpirationService());
+    getIt.registerSingleton(DayNightPalette());
+    getIt.registerSingleton(CurrentLocationService());
 
     getIt.registerSingleton(CityStorage());
     getIt.registerSingleton(WeatherStorage());
     getIt.registerSingleton(DetailedWeatherStorage());
 
     getIt.registerSingleton(CityRepository(getIt.get(), getIt.get()));
-    getIt.registerSingleton(WeatherRepository(getIt.get(), getIt.get()));
+    getIt.registerSingleton(WeatherRepository(getIt.get(), getIt.get(), getIt.get()));
     getIt.registerSingleton(DetailedWeatherRepository(getIt.get(), getIt.get()));
-    getIt.registerSingleton(DayNightPalette());
+
+    getIt.registerSingleton(WeatherUpdaterService(getIt.get(), getIt.get()));
   }
 
   Future _initHive() async {
@@ -73,5 +81,9 @@ class AppStarter {
     prefs.remove('saved_cities');
     prefs.remove('saved_weather');
     prefs.remove('saved_detailed_weather');
+  }
+
+  Future _refreshWeather() async {
+    await getIt.get<WeatherUpdaterService>().updateAllWeather();
   }
 }

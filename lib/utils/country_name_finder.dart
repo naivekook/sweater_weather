@@ -11,7 +11,10 @@ class CountryNameFinder {
       parsedCountries = _parseJson(json);
     }
     return parsedCountries
-        .firstWhere((e) => e.code.toLowerCase() == code.toLowerCase())
+        .firstWhere(
+          (e) => e.code.toLowerCase() == code.toLowerCase(),
+          orElse: () => null,
+        )
         .name;
   }
 
@@ -19,9 +22,7 @@ class CountryNameFinder {
     if (jsonString == null) return null;
 
     final Iterable parsed = jsonDecode(jsonString);
-    return parsed
-        .map((e) => _Country.fromJson(e as Map<String, dynamic>))
-        .toList();
+    return parsed.map((e) => _Country.fromJson(e as Map<String, dynamic>)).toList();
   }
 }
 

@@ -1,39 +1,45 @@
+
+import 'package:sweaterweather/data/api/dto/weather_dto.dart';
 import 'package:sweaterweather/data/api/weather_api.dart';
 import 'package:sweaterweather/data/repository/mapper.dart';
 import 'package:sweaterweather/data/storage/weather_storage.dart';
 import 'package:sweaterweather/models/hive/city.dart';
 import 'package:sweaterweather/models/hive/weather.dart';
+import 'package:sweaterweather/services/weather_expiration_service.dart';
 
 class WeatherRepository {
   final WeatherApi _weatherApi;
   final WeatherStorage _weatherStorage;
+  final WeatherExpirationService _weatherExpirationService;
   final _mapper = Mapper();
 
-  WeatherRepository(this._weatherApi, this._weatherStorage);
+  WeatherRepository(this._weatherApi, this._weatherStorage, this._weatherExpirationService);
 
-  Future<List<Weather>> getAllWeather() async {
-    final items = await _weatherStorage.getWeather();
-    return items.toList();
-  }
+  Future<List<Weather>> getAllWeather() => _weatherStorage.getAllWeather();
 
   Future<Weather> getWeatherForCity(City city) async {
-    final result = await _weatherApi.getWeatherByCityId(city.id);
-    final weather = await _mapper.mapWeatherResponse(result);
-    await _saveWeather(weather);
-    return weather;
+    Weather savedWeather = await _weatherStorage.findWeatherByCityId(city.id);
+    if (savedWeather != null && !_weatherExpirationService.isWeatherExpired(savedWeather)) {
+      return savedWeather;
+    } else {
+      WeatherDto result = await _weatherApi.getWeatherByCityId(city.id);
+      Weather fetchedWeather = await _mapper.mapWeatherResponse(result);
+      await _save(fetchedWeather);
+      return fetchedWeather;
+    }
   }
 
   Future<Weather> getWeatherForLocation(double lat, double lon) async {
-    final result = await _weatherApi.getWeatherByLocation(lat, lon);
-    final weather = await _mapper.mapWeatherResponse(result);
-    await _saveWeather(weather);
-    return weather;
+    Weather savedWeather = await _weatherStorage.findWeatherByLocation(lat, lon);
+    if (savedWeather != null && !_weatherExpirationService.isWeatherExpired(savedWeather)) {
+      return savedWeather;
+    } else {
+      WeatherDto result = await _weatherApi.getWeatherByLocation(lat, lon);
+      Weather fetchedWeather = await _mapper.mapWeatherResponse(result);
+      await _save(fetchedWeather);
+      return fetchedWeather;
+    }
   }
 
-  Future<void> _saveWeather(Weather weather) async {
-    final List<Weather> weatherList = await _weatherStorage.getWeather();
-    weatherList.removeWhere((element) => element.city.id == weather.city.id);
-    weatherList.add(weather);
-    await _weatherStorage.saveWeather(weatherList);
-  }
+  Future<void> _save(Weather weather) => _weatherStorage.saveWeather(weather);
 }
