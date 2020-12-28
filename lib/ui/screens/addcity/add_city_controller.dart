@@ -1,24 +1,29 @@
 import 'package:flutter/foundation.dart';
 import 'package:sweaterweather/app_starter.dart';
 import 'package:sweaterweather/data/repository/city_repository.dart';
+import 'package:sweaterweather/data/repository/weather_repository.dart';
 import 'package:sweaterweather/models/hive/weather.dart';
 import 'package:sweaterweather/ui/screens/addcity/add_city_list_item.dart';
 import 'package:sweaterweather/utils/weather_icon_utils.dart';
 
 class AddCityController with ChangeNotifier {
   final CityRepository _cityRepository = getIt.get();
+  final WeatherRepository _weatherRepository = getIt.get();
 
   List<CityListItem> listItems = [];
   bool isProgress = false;
 
-  Future<void> findByName(String name) async {
+  Future findByName(String name) async {
     listItems.clear();
     if (name.isEmpty) {
       notifyListeners();
       return;
     }
     _setProgress(true);
-    final cities = await _cityRepository.findCityByName(name);
+    List<Weather> cities;
+    try {
+      cities = await _cityRepository.findCityByName(name);
+    } catch (ex) {}
     if (cities != null && cities.length > 0) {
       final items = _mapToItem(cities);
       final savedCities = await _cityRepository.getCities();
@@ -32,12 +37,14 @@ class AddCityController with ChangeNotifier {
     _setProgress(false);
   }
 
-  Future<void> itemTapped(CityListItem item) async {
+  Future itemTapped(CityListItem item) async {
     if (item.added) {
       await _cityRepository.removeCity(item.city);
+      await _weatherRepository.removeWeatherForCity(item.city);
       item.added = false;
     } else {
       await _cityRepository.saveCity(item.city);
+      await _weatherRepository.getWeatherForCity(item.city);
       item.added = true;
     }
     notifyListeners();

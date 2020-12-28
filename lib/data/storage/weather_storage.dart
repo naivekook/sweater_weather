@@ -33,4 +33,9 @@ class WeatherStorage {
           orElse: () => null,
         );
   }
+
+  Future removeWeatherByCityId(int cityId) async {
+    Box box = await Hive.openBox(_WEATHER_KEY);
+    box.delete(cityId);
+  }
 }

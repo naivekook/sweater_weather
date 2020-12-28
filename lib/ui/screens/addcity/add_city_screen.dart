@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:sweaterweather/ui/screens/addcity/add_city_controller.dart';
 import 'package:sweaterweather/ui/screens/addcity/add_city_list_item.dart';
 import 'package:sweaterweather/ui/screens/addcity/add_city_list_tile.dart';
-import 'package:sweaterweather/utils/debouncer.dart';
+import 'package:sweaterweather/ui/screens/addcity/search_bar_widget.dart';
 
 class AddCityScreen extends StatelessWidget {
   @override
@@ -22,7 +22,7 @@ class AddCityScreen extends StatelessWidget {
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 26, vertical: 0),
-                child: _SearchBarWidget(),
+                child: _SearchBar(),
               ),
               Expanded(
                 child: Padding(
@@ -65,64 +65,15 @@ class _TopBarWidget extends StatelessWidget {
   }
 }
 
-class _SearchBarWidget extends StatelessWidget {
-  final _debouncer = Debouncer(milliseconds: 500);
-  final _controller = TextEditingController();
-
+class _SearchBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    _controller.addListener(() {
-      final text = _controller.text;
-      _debouncer.run(() {
-        Provider.of<AddCityController>(context, listen: false).findByName(text);
-      });
-    });
-    return TextField(
-      controller: _controller,
-      textInputAction: TextInputAction.done,
-      keyboardType: TextInputType.text,
-      autofocus: true,
-      maxLines: 1,
-      decoration: InputDecoration(
-        contentPadding: const EdgeInsets.all(0),
-        prefixIcon: Icon(
-          Icons.search,
-          color: const Color(0xFF7F808C),
-        ),
-        suffixIcon: ValueListenableBuilder(
-          valueListenable: _controller,
-          builder: (context, value, child) => Visibility(
-            visible: (value as TextEditingValue).text.length > 0,
-            child: IconButton(
-                icon: Icon(
-                  Icons.clear,
-                  color: const Color(0xFF7F808C),
-                ),
-                onPressed: () {
-                  _controller.clear();
-                }),
-          ),
-        ),
-        hintText: 'Search for location',
-        hintStyle: GoogleFonts.inter(
-            textStyle: TextStyle(
-                color: const Color(0xFF7F808C),
-                fontSize: 14,
-                fontStyle: FontStyle.normal,
-                fontWeight: FontWeight.normal)),
-        filled: true,
-        fillColor: const Color(0xFFF5F6F7),
-        focusedBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: const Color(0xFFF5F6F7)),
-          borderRadius: BorderRadius.circular(9.0),
-        ),
-      ),
-      style: GoogleFonts.inter(
-          textStyle: TextStyle(
-              color: const Color(0xFF3D3F4E),
-              fontSize: 14,
-              fontStyle: FontStyle.normal,
-              fontWeight: FontWeight.normal)),
+    return Consumer<AddCityController>(
+      builder: (context, value, child) {
+        return SearchBarWidget((text) {
+          Provider.of<AddCityController>(context, listen: false).findByName(text);
+        });
+      },
     );
   }
 }

@@ -41,5 +41,7 @@ class WeatherRepository {
     }
   }
 
-  Future<void> _save(Weather weather) => _weatherStorage.saveWeather(weather);
+  Future removeWeatherForCity(City city) => _weatherStorage.removeWeatherByCityId(city.id);
+
+  Future _save(Weather weather) => _weatherStorage.saveWeather(weather);
 }
