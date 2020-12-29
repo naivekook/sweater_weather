@@ -30,7 +30,6 @@ class AppStarter {
     await _initHive();
     _initGraph();
     await _migrateToHive();
-    await _refreshWeather();
   }
 
   _initGraph() {
@@ -81,9 +80,5 @@ class AppStarter {
     prefs.remove('saved_cities');
     prefs.remove('saved_weather');
     prefs.remove('saved_detailed_weather');
-  }
-
-  Future _refreshWeather() async {
-    await getIt.get<WeatherUpdaterService>().updateAllWeather();
   }
 }

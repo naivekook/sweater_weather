@@ -7,8 +7,7 @@ import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:sweaterweather/app_router.dart';
-import 'package:sweaterweather/app_starter.dart';
-import 'package:sweaterweather/ui/widgets/weather_icon_loader.dart';
+import 'package:sweaterweather/ui/screens/splash/splash_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -22,7 +21,7 @@ void main() async {
       SystemUiOverlayStyle.dark.copyWith(statusBarColor: Colors.transparent));
 
   runZoned(() {
-    runApp(SplashApp());
+    runApp(SplashScreen());
   }, onError: FirebaseCrashlytics.instance.recordError);
 }
 
@@ -34,35 +33,6 @@ class MainApp extends StatelessWidget {
       theme: ThemeData.light(),
       onGenerateRoute: AppRouter.generateRoute,
       initialRoute: AppRouter.HOME,
-    );
-  }
-}
-
-class SplashApp extends StatelessWidget {
-  final _starter = AppStarter();
-
-  @override
-  Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: _starter.init(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.done) {
-          return MainApp();
-        } else {
-          return MaterialApp(
-            theme: ThemeData.light(),
-            home: Scaffold(
-              backgroundColor: const Color(0xFFBCE8F4),
-              body: SafeArea(
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 24),
-                  child: WeatherIconLoader(),
-                ),
-              ),
-            ),
-          );
-        }
-      },
     );
   }
 }
